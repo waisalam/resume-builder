@@ -2,8 +2,12 @@
 
 import { ArrowRight, CheckCircle2, Zap, Brain, FileText, Briefcase } from 'lucide-react'
 import Link from 'next/link'
+import {useSession, signIn, signOut} from 'next-auth/react'
 
 export default function HomePage() {
+
+  const {data: session} = useSession()
+
   return (
     <div style={{ backgroundColor: '#000000', minHeight: '100vh' }}>
       {/* Navigation */}
@@ -15,11 +19,37 @@ export default function HomePage() {
           </Link>
           <Link
             href="/analyzer"
-            style={{ backgroundColor: '#ff8c00', color: '#000000' }}
-            className="px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition"
-          >
-            Get Started
+            onClick={(e) => {
+    if (!session) {
+      e.preventDefault();
+      signIn("google");
+    }
+  }}
+  style={{ backgroundColor: '#ff8c00', color: '#000000' }}
+  className="inline-flex items-center gap-2 px-8 py-4 rounded-lg font-bold text-lg hover:opacity-90 transition mr-5"
+>
+  Start Analyzing <ArrowRight size={20} />
           </Link>
+          {session ? (
+            <div className="flex items-center gap-4">
+              <span style={{ color: '#cccccc', fontSize: 14 }}>{session.user?.name}</span>
+              <button
+                onClick={() => signOut()}
+                style={{ backgroundColor: '#333', color: '#fff' }}
+                className="px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition"
+              >
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => signIn("google")}
+              style={{ backgroundColor: '#ff8c00', color: '#000000' }}
+              className="px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition"
+            >
+              Sign in
+            </button>
+          )}
         </div>
       </nav>
 

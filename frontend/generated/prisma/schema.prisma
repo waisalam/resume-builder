@@ -13,24 +13,51 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
+  id        String    @id @default(cuid())
+  name      String?
+  email     String?   @unique
+  image     String?
+  accounts  Account[]
+  sessions  Session[]
   resume    Resume[]
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Resume {
-  id            String  @id @default(cuid())
+  id            String   @id @default(cuid())
   title         String
   resumeJson    Json
   atsScore      Float?
   predictedRole String?
   orignalResume String?
-
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
