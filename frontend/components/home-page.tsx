@@ -9,17 +9,17 @@ export default function HomePage() {
       {/* Navigation */}
       <nav style={{ borderBottom: '1px solid #222222', backgroundColor: '#000000' }}>
         <div  className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" style={{ color: '#ff8c00', fontFamily: "var(--font-montserrat)"  }} className="text-2xl font-bold flex items-center gap-2">
+          <Link href='/' style={{ color: '#ff8c00', fontFamily: "var(--font-montserrat)"  }} className="text-2xl font-bold flex items-center gap-2">
             <Zap size={28} />
             ATS Analyzer
           </Link>
-          <a
+          <Link
             href="/analyzer"
             style={{ backgroundColor: '#ff8c00', color: '#000000' }}
             className="px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition"
           >
             Get Started
-          </a>
+          </Link>
         </div>
       </nav>
 
