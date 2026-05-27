@@ -22,7 +22,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/">
-            <div href="/" style={{ color: '#ff8c00' }} className="text-2xl font-bold flex items-center gap-2 cursor-pointer hover:opacity-80 transition">
+            <div  style={{ color: '#ff8c00' }} className="text-2xl font-bold flex items-center gap-2 cursor-pointer hover:opacity-80 transition">
               <Zap size={28} />
               ATS Analyzer
             </div>
