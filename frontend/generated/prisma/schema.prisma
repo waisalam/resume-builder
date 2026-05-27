@@ -13,25 +13,24 @@ datasource db {
 }
 
 model User {
-  id String @id @default(cuid())
-  name String
-  email String @unique
-  resume Resume[]
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  resume    Resume[]
   createdAt DateTime @default(now())
-} 
+}
 
 model Resume {
-id String @id @default(cuid())
-title String
-resumeJson Json
-atsScore Float?
-predictedRole String?
-orignalResume String?
+  id            String  @id @default(cuid())
+  title         String
+  resumeJson    Json
+  atsScore      Float?
+  predictedRole String?
+  orignalResume String?
 
-userId String?
-user User? @relation(fields: [userId], references: [id])
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
