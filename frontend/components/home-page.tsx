@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, Zap, Brain, FileText, Briefcase, Sparkles, Tr
 import Link from 'next/link'
 import { useSession, signIn } from 'next-auth/react'
 import Navbar from '@/components/navbar'
+import WorkWithUs from '@/components/work-with-us'
 
 export default function HomePage() {
   const { data: session } = useSession()
@@ -270,6 +271,9 @@ export default function HomePage() {
           </a>
         </div>
       </section>
+
+      {/* Work With Us Section */}
+      <WorkWithUs />
 
       {/* Footer */}
       <footer className="bg-black border-t border-gray-900 py-8">
