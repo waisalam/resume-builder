@@ -2,7 +2,7 @@ import AtsAnalyzer from '@/components/atsAnalyzer'
 
 export default function AnalyzerPage() {
   return (
-    <main>
+    <main className="w-full">
       <AtsAnalyzer />
     </main>
   )

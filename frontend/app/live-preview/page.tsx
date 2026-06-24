@@ -2,7 +2,9 @@ import React from 'react'
 import ResumeEnhancePage from "@/components/ResumeEnhancePage"
 const Page = () => {
   return (
-    <ResumeEnhancePage />
+    <div className="w-full">
+      <ResumeEnhancePage />
+    </div>
   )
 }
 
