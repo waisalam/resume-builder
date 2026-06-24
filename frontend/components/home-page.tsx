@@ -125,7 +125,7 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
+    <div className="w-full min-h-screen bg-black text-white overflow-x-hidden">
       <Navbar />
 
       {/* Hero Section */}
@@ -140,7 +140,7 @@ export default function HomePage() {
         {/* Grid Pattern Overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px]" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 text-center">
+        <div className="relative z-10 w-full px-6 sm:px-8 text-center">
           {/* Animated Badge */}
           <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/20 to-amber-500/20 border border-orange-500/30 animate-fade-in-down">
             <Sparkles className="w-4 h-4 text-orange-500 animate-spin-slow" />
@@ -159,7 +159,7 @@ export default function HomePage() {
           </div>
 
           {/* Subheading */}
-          <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in animation-delay-200">
+          <p className="text-lg sm:text-xl text-gray-400 w-full max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in animation-delay-200">
             Get past ATS filters and land more interviews. Our AI analyzes your resume against job descriptions with 98% accuracy powered by 6000+ real resume data.
           </p>
 
@@ -215,7 +215,7 @@ export default function HomePage() {
       <section className="relative py-24 bg-gradient-to-b from-black via-gray-900/50 to-black">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent" />
         
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="relative z-10 w-full px-6 sm:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 animate-fade-in">
               Powerful Features
@@ -256,7 +256,7 @@ export default function HomePage() {
       <section ref={countersRef} className="relative py-24 bg-gradient-to-b from-black to-gray-900 border-y border-gray-800">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent" />
         
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="relative z-10 w-full px-6 sm:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center group">
               <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
@@ -292,7 +292,7 @@ export default function HomePage() {
 
       {/* Testimonials Carousel Placeholder */}
       <section className="py-24 bg-gradient-to-b from-gray-900 to-black">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="w-full px-6 sm:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 animate-fade-in">
               What Our Users Say
@@ -340,7 +340,7 @@ export default function HomePage() {
 
       {/* How It Works Section */}
       <section className="py-24 bg-black">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="w-full px-6 sm:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 animate-fade-in">
               How It Works
@@ -392,7 +392,7 @@ export default function HomePage() {
       <section className="relative py-24 bg-gradient-to-r from-orange-500/10 via-black to-amber-500/10 border-t border-gray-800">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent" />
         
-        <div className="relative z-10 max-w-4xl mx-auto px-6 sm:px-8 text-center">
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-6 sm:px-8 text-center">
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-6 animate-fade-in">
             Ready to Transform Your Job Search?
           </h2>
@@ -429,7 +429,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="bg-black border-t border-gray-800 py-12">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="w-full px-6 sm:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="col-span-1 md:col-span-2">
               <h3 className="text-xl font-bold text-white mb-4">ATS Analyzer</h3>
