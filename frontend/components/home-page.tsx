@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { useSession, signIn } from 'next-auth/react'
 import Navbar from '@/components/navbar'
 import { useEffect, useRef, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function HomePage() {
   const { data: session } = useSession()
@@ -182,7 +184,7 @@ export default function HomePage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in animation-delay-300">
-            <button
+            <Button
               onClick={(e) => {
                 if (!session) {
                   e.preventDefault()
@@ -191,21 +193,23 @@ export default function HomePage() {
                   window.location.href = '/analyzer'
                 }
               }}
-              className="relative group px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-bold text-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 inline-flex items-center gap-2"
+              className="group relative h-auto px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-bold text-lg rounded-xl transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 inline-flex items-center gap-2"
             >
-              <span className="relative z-10 flex items-center gap-2">
+              <span className="flex items-center gap-2">
                 Analyze Resume
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </button>
-            <a
-              href="/live-preview"
-              className="px-8 py-4 border border-orange-500/50 text-orange-400 font-bold text-lg rounded-xl backdrop-blur-sm bg-white/5 hover:bg-white/10 hover:border-orange-500 transition-all duration-300 inline-flex items-center gap-2 group hover:shadow-lg hover:shadow-orange-500/20"
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="group h-auto px-8 py-4 border-orange-500/50 text-orange-400 font-bold text-lg rounded-xl bg-white/5 hover:bg-white/10 hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 inline-flex items-center gap-2"
             >
-              Build Resume
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </a>
+              <Link href="/live-preview">
+                Build Resume
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
           </div>
 
           {/* Trust Indicators */}
@@ -244,23 +248,22 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
-              <div
+              <Card
                 key={index}
-                className="group relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-orange-500/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/5 animate-fade-in"
+                className="group relative bg-white/5 backdrop-blur-sm border-white/10 hover:border-orange-500/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/5 animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                {/* Soft gradient overlay on hover */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                
-                <div className="relative z-10 flex flex-col h-full">
+                <CardHeader className="relative z-10 p-6 pb-4">
                   <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} p-2.5 mb-5 group-hover:scale-110 transition-transform duration-300`}>
                     <feature.icon className="w-full h-full text-white" />
                   </div>
-                  
-                  <h3 className="text-lg font-semibold text-white mb-3">{feature.title}</h3>
-                  <p className="text-sm text-gray-400 leading-relaxed flex-grow">{feature.description}</p>
-                </div>
-              </div>
+                  <CardTitle className="text-lg font-semibold text-white mb-3">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="relative z-10 p-6 pt-0">
+                  <p className="text-sm text-gray-400 leading-relaxed">{feature.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
@@ -317,8 +320,8 @@ export default function HomePage() {
           </div>
 
           <div className="relative animate-fade-in animation-delay-200">
-            {/* Main card */}
-            <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 sm:p-10 transition-all duration-500">
+            {/* Main testimonial card */}
+            <Card className="relative bg-white/5 backdrop-blur-sm border-white/10 rounded-2xl p-8 sm:p-10 transition-all duration-500">
               <Quote className="w-10 h-10 text-orange-500/30 mb-6" />
               <blockquote className="text-xl sm:text-2xl text-gray-200 mb-8 leading-relaxed font-light italic">
                 "{testimonials[activeTestimonial].quote}"
@@ -352,7 +355,7 @@ export default function HomePage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </Card>
 
             {/* Navigation dots */}
             <div className="flex justify-center gap-2 mt-8">
@@ -404,18 +407,20 @@ export default function HomePage() {
                 description: 'Receive detailed insights, keyword matches, missing skills, and actionable recommendations.'
               }
             ].map((item, index) => (
-              <div
+              <Card
                 key={index}
-                className="group relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl animate-fade-in"
+                className="group relative bg-white/5 backdrop-blur-sm border-white/10 hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl animate-fade-in"
                 style={{ animationDelay: `${index * 200}ms` }}
               >
-                <div className="text-6xl font-black text-orange-500/10 mb-4 select-none">{item.step}</div>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                  <item.icon className="w-6 h-6 text-orange-500" />
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-3">{item.title}</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">{item.description}</p>
-              </div>
+                <CardContent className="p-8">
+                  <div className="text-6xl font-black text-orange-500/10 mb-4 select-none">{item.step}</div>
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                    <item.icon className="w-6 h-6 text-orange-500" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-3">{item.title}</h3>
+                  <p className="text-sm text-gray-400 leading-relaxed">{item.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
@@ -433,7 +438,7 @@ export default function HomePage() {
             Join thousands of professionals who have improved their ATS scores and landed their dream jobs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animation-delay-200">
-            <button
+            <Button
               onClick={(e) => {
                 if (!session) {
                   e.preventDefault()
@@ -442,20 +447,23 @@ export default function HomePage() {
                   window.location.href = '/analyzer'
                 }
               }}
-              className="relative group px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-bold text-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 inline-flex items-center gap-2"
+              className="group relative h-auto px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-bold text-lg rounded-xl transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 inline-flex items-center gap-2"
             >
-              <span className="relative z-10 flex items-center gap-2">
+              <span className="flex items-center gap-2">
                 Start Free Analysis
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </span>
-            </button>
-            <a
-              href="/live-preview"
-              className="px-8 py-4 border border-orange-500/50 text-orange-400 font-bold text-lg rounded-xl backdrop-blur-sm bg-white/5 hover:bg-white/10 hover:border-orange-500 transition-all duration-300 inline-flex items-center gap-2 group hover:shadow-lg hover:shadow-orange-500/20"
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="group h-auto px-8 py-4 border-orange-500/50 text-orange-400 font-bold text-lg rounded-xl bg-white/5 hover:bg-white/10 hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 inline-flex items-center gap-2"
             >
-              Build Resume
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </a>
+              <Link href="/live-preview">
+                Build Resume
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
