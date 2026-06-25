@@ -166,6 +166,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
   html {
     @apply font-sans;
     margin: 0;
@@ -183,6 +188,7 @@
     min-height: 100vh;
     background-image: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
     background-size: 400% 400%;
+    background-attachment: fixed;
     animation: gradientShift 15s ease infinite;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
