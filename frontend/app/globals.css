@@ -53,6 +53,8 @@
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-layered: 0 0 0 1px rgb(0 0 0 / 0.05), 0 4px 12px rgb(0 0 0 / 0.1);
+  --shadow-glass: 0 8px 32px rgb(0 0 0 / 0.12), 0 0 0 1px rgb(255 255 255 / 0.15);
 
   /* Custom animation keyframes */
   --animate-fade-in-up: fadeInUp 0.6s ease-out forwards;
@@ -60,6 +62,7 @@
   --animate-gradient: gradientShift 4s ease infinite;
   --animate-fade-in: fadeIn 0.5s ease-out forwards;
   --animate-scale-in: scaleIn 0.4s ease-out forwards;
+  --animate-background-flow: backgroundFlow 12s ease-in-out infinite;
 }
 
 :root {
@@ -183,9 +186,19 @@
     min-height: 100vh;
     background-image: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
     background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    animation: backgroundFlow 12s ease-in-out infinite;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Global interactive element polish */
+  button,
+  a,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  .interactive {
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   }
 
   /* Improved typography scaling */
@@ -279,6 +292,19 @@
   }
 }
 
+/* Smooth background flow animation (new, smoother) */
+@keyframes backgroundFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 /* Utility classes for animations */
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out forwards;
@@ -299,6 +325,12 @@
 
 .animate-scale-in {
   animation: scaleIn 0.4s ease-out forwards;
+}
+
+/* Smooth background flow utility */
+.animate-background-flow {
+  background-size: 400% 400%;
+  animation: backgroundFlow 12s ease-in-out infinite;
 }
 
 /* Hero section grid background pattern */
@@ -324,6 +356,15 @@
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
 }
+.hover-lift:active {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.active-scale:active {
+  transform: scale(0.98);
+  transition: transform var(--transition-fast);
+}
 
 .transition-all-smooth {
   transition: all var(--transition-base);
@@ -335,6 +376,7 @@
   transition: all var(--transition-slow);
 }
 
+/* Glassmorphism core */
 .glass {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
@@ -343,12 +385,30 @@
   box-shadow: var(--shadow-md);
 }
 .glass-card {
-  /* alias for glass */
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-md);
+}
+
+/* Enhanced glass with hover */
+.glass-hover {
+  transition: backdrop-filter var(--transition-base), box-shadow var(--transition-base);
+}
+.glass-hover:hover {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-glass);
+}
+
+/* Glass with layered shadow for extra depth */
+.glass-layered {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-layered);
 }
 
 /* Full-height containers */

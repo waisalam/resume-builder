@@ -11,38 +11,57 @@ export default function AnalyzerPage() {
   }, []);
 
   return (
-    <main className="min-h-screen flex items-start justify-center p-4 md:p-8">
-      <div
-        className={`
-          w-full max-w-4xl mx-auto transition-all duration-700 ease-out
-          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
-          backdrop-blur-lg bg-white/30 dark:bg-gray-800/30 border border-white/20 dark:border-gray-700/30
-          rounded-2xl shadow-xl p-6 sm:p-8 md:p-10
-        `}
-      >
-        <div className="mb-6 flex items-center gap-3">
-          <div className="p-2 bg-blue-500/10 rounded-full">
-            <svg
-              className="w-6 h-6 text-blue-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            ATS Resume Analyzer
-          </h1>
-          <span className="ml-auto text-xs font-medium px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 rounded-full shadow-sm">
+    <main className="min-h-screen flex flex-col items-center justify-start p-4 md:p-8">
+      <style>{`
+        @keyframes underlineGrow {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-underline-grow {
+          animation: underlineGrow 0.8s ease-out forwards;
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 0.6s ease-out forwards;
+        }
+      `}</style>
+
+      {/* Hero Section */}
+      <div className="w-full max-w-4xl mx-auto text-center py-12 md:py-16">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+          ATS Resume Analyzer
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 flex items-center justify-center gap-2">
+          <span className="inline-block px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 rounded-full shadow-sm">
             AI-Powered
           </span>
-        </div>
+          <span>Analyze your resume instantly</span>
+        </p>
+        <div
+          className="mx-auto h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full w-0 animate-underline-grow"
+          style={{ maxWidth: '200px' }}
+        />
+      </div>
+
+      {/* Analyzer Card */}
+      <div
+        className={`
+          w-full max-w-4xl mx-auto
+          backdrop-blur-lg bg-white/30 dark:bg-gray-800/30 border border-white/20 dark:border-gray-700/30
+          rounded-2xl shadow-xl p-6 sm:p-8 md:p-10
+          transition-transform duration-300 hover:scale-[1.02]
+          ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}
+        `}
+      >
         <AtsAnalyzer />
       </div>
     </main>
