@@ -120,40 +120,41 @@
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.2 0.042 264.695);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.2 0.042 264.695);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.62 0.2 260);
-  --primary-foreground: oklch(0.129 0.042 264.695);
-  --secondary: oklch(0.7 0.19 180);
-  --secondary-foreground: oklch(0.129 0.042 264.695);
-  --accent: oklch(0.75 0.18 40);
-  --accent-foreground: oklch(0.129 0.042 264.695);
-  --muted: oklch(0.3 0 0);
-  --muted-foreground: oklch(0.7 0 0);
-  --destructive: oklch(0.55 0.25 27.325);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(1 0 0 / 0.1);
-  --input: oklch(1 0 0 / 0.15);
-  --ring: oklch(0.62 0.2 260);
-  --chart-1: oklch(0.62 0.2 260);
-  --chart-2: oklch(0.7 0.19 180);
-  --chart-3: oklch(0.75 0.18 40);
-  --chart-4: oklch(0.6 0.15 300);
-  --chart-5: oklch(0.55 0.2 20);
+  /* Dark modern slate color scheme */
+  --background: #020617;
+  --foreground: #f8fafc;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+  --popover: #0f172a;
+  --popover-foreground: #f8fafc;
+  --primary: #6366f1;
+  --primary-foreground: #f8fafc;
+  --secondary: #10b981;
+  --secondary-foreground: #020617;
+  --accent: #f59e0b;
+  --accent-foreground: #020617;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --destructive: #ef4444;
+  --destructive-foreground: #f8fafc;
+  --border: #334155;
+  --input: #334155;
+  --ring: #6366f1;
+  --chart-1: #6366f1;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #8b5cf6;
+  --chart-5: #f43f5e;
   --radius: 0.625rem;
 
-  --sidebar: oklch(0.2 0.042 264.695);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: var(--primary);
-  --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-accent: oklch(0.3 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 0.1);
-  --sidebar-ring: var(--ring);
+  --sidebar: #0f172a;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #6366f1;
+  --sidebar-primary-foreground: #f8fafc;
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: #334155;
+  --sidebar-ring: #6366f1;
 
   /* Dark mode overrides */
   --gradient-1: oklch(0.3 0.05 260 / 0.2);
@@ -166,21 +167,23 @@
   * {
     @apply border-border outline-ring/50;
   }
-  html {
-    @apply font-sans;
+
+  html, body {
     margin: 0;
     padding: 0;
     width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
+  html {
+    @apply font-sans;
     scroll-behavior: smooth;
     font-family: var(--font-sans);
   }
+
   body {
     @apply bg-background text-foreground;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden;
-    min-height: 100vh;
     background-image: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
