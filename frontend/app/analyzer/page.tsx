@@ -11,13 +11,15 @@ export default function AnalyzerPage() {
   }, []);
 
   return (
-    <main className="min-h-screen flex items-start justify-center p-4 md:p-8">
+    <main className="w-full min-h-screen flex items-center justify-center px-4 py-16 md:px-8 md:py-24">
       <div
         className={`
-          w-full max-w-4xl mx-auto transition-all duration-700 ease-out
+          w-full max-w-6xl mx-auto
+          backdrop-blur-xl bg-white/10 dark:bg-gray-900/40
+          rounded-3xl border border-white/20 dark:border-gray-700/30
+          shadow-2xl p-6 md:p-10
+          transition-all duration-700 ease-out
           ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
-          backdrop-blur-lg bg-white/30 dark:bg-gray-800/30 border border-white/20 dark:border-gray-700/30
-          rounded-2xl shadow-xl p-6 sm:p-8 md:p-10
         `}
       >
         <div className="mb-6 flex items-center gap-3">
@@ -43,7 +45,9 @@ export default function AnalyzerPage() {
             AI-Powered
           </span>
         </div>
-        <AtsAnalyzer />
+        <div className="w-full">
+          <AtsAnalyzer />
+        </div>
       </div>
     </main>
   );
