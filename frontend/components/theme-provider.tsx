@@ -27,16 +27,6 @@ function ThemeProviderInner({ children }: { children: React.ReactNode }) {
   }, [])
 
   React.useEffect(() => {
-    const root = document.documentElement
-    const originalTransition = root.style.transition
-    root.style.transition = 'background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease'
-    return () => {
-      root.style.transition = originalTransition
-    }
-  }, [])
-
-  // Global full-width fix and redesign reset
-  React.useEffect(() => {
     const style = document.createElement('style')
     style.innerHTML = `
       html, body {
@@ -48,6 +38,19 @@ function ThemeProviderInner({ children }: { children: React.ReactNode }) {
       }
       *, *::before, *::after {
         box-sizing: border-box;
+      }
+      /* Smooth transitions for theme colors */
+      * {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      }
+      /* CSS variables for light and dark themes */
+      :root {
+        --background: hsl(0 0% 100%);
+        --foreground: hsl(0 0% 3.9%);
+      }
+      .dark {
+        --background: hsl(0 0% 3.9%);
+        --foreground: hsl(0 0% 98%);
       }
     `
     document.head.appendChild(style)

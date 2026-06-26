@@ -65,14 +65,14 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`sticky top-0 z-50 backdrop-blur-md transition-shadow duration-300 ${
+        className={`sticky top-0 z-50 backdrop-blur-xl transition-shadow duration-300 ${
           isScrolled ? 'shadow-lg dark:shadow-black/30' : 'shadow-none'
-        } bg-white/90 dark:bg-black/80 border-b border-gray-200 dark:border-gray-800`}
+        } bg-white/70 dark:bg-gray-950/70 border-b border-white/20 dark:border-white/10`}
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-          {/* Logo with smooth entrance animation */}
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between relative">
+          {/* Logo */}
           <Link
             href="/"
             className={`flex items-center gap-2 group transition-all duration-500 ease-out ${
@@ -87,9 +87,27 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Right section: Theme toggle, Auth, Hamburger */}
+          {/* Center navigation links - hidden on mobile */}
+          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2">
+            <div className="flex items-center space-x-6">
+              <Link href="/" className={navItemClass}>
+                Home
+              </Link>
+              <Link href="/analyzer" className={navItemClass}>
+                Analyze
+              </Link>
+              <Link href="#" className={navItemClass}>
+                Features
+              </Link>
+              <Link href="#" className={navItemClass}>
+                Pricing
+              </Link>
+            </div>
+          </div>
+
+          {/* Right section: theme toggle, auth/profile, hamburger */}
           <div className="flex items-center gap-3">
-            {/* Theme toggle with rotating sun/moon */} 
+            {/* Theme toggle */}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
@@ -163,96 +181,102 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile slide-in drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
-          {/* Backdrop overlay */}
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setMobileMenuOpen(false)}
-            aria-hidden="true"
-          />
-          {/* Drawer panel */}
-          <aside
-            className="absolute right-0 top-0 h-full w-64 bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Mobile menu"
-          >
-            <div className="flex justify-end p-4">
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
-                aria-label="Close menu"
-              >
-                <X size={24} />
-              </button>
-            </div>
-            <nav className="px-4 py-2 flex flex-col gap-1">
-              {/* Animated list items */}
-              {[
-                { label: 'Home', href: '/' },
-                { label: 'Analyze', href: '/analyzer', requiresAuth: true },
-              ].map((item, index) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  onClick={(e) => {
-                    if (item.requiresAuth && !session) {
-                      e.preventDefault()
-                      signIn('google')
-                    }
-                    setMobileMenuOpen(false)
-                  }}
-                  className={`${navItemClass} opacity-0 animate-slide-in`}
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                    animationFillMode: 'forwards',
-                  }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {/* Separator */}
-              <hr
-                className="my-2 border-gray-200 dark:border-gray-700 opacity-0 animate-slide-in"
-                style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}
-              />
-              {session ? (
-                <>
-                  <div
-                    className="py-2 px-3 text-sm text-gray-500 dark:text-gray-400 opacity-0 animate-slide-in"
-                    style={{ animationDelay: '300ms', animationFillMode: 'forwards' }}
-                  >
-                    {session.user?.name}
-                  </div>
-                  <button
-                    onClick={() => {
-                      signOut()
-                      setMobileMenuOpen(false)
-                    }}
-                    className={`${navItemClass} opacity-0 animate-slide-in`}
-                    style={{ animationDelay: '400ms', animationFillMode: 'forwards' }}
-                  >
-                    Sign out
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => {
+      {/* Mobile full‑width slide‑out menu (always rendered for animation) */}
+      <div
+        className={`fixed inset-0 z-40 md:hidden transition-all duration-300 ${
+          mobileMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'
+        }`}
+        aria-hidden={!mobileMenuOpen}
+      >
+        {/* Backdrop overlay */}
+        <div
+          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+            mobileMenuOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+          onClick={() => setMobileMenuOpen(false)}
+        />
+        {/* Panel */}
+        <aside
+          className={`absolute inset-0 w-full h-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-2xl transform transition-transform duration-300 ${
+            mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile menu"
+        >
+          <div className="flex justify-end p-4">
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+              aria-label="Close menu"
+            >
+              <X size={24} />
+            </button>
+          </div>
+          <nav className="px-4 py-2 flex flex-col gap-1">
+            {[
+              { label: 'Home', href: '/' },
+              { label: 'Analyze', href: '/analyzer', requiresAuth: true },
+              { label: 'Features', href: '#', requiresAuth: false },
+              { label: 'Pricing', href: '#', requiresAuth: false },
+            ].map((item, index) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={(e) => {
+                  if (item.requiresAuth && !session) {
+                    e.preventDefault()
                     signIn('google')
-                    setMobileMenuOpen(false)
-                  }}
-                  className={`${navItemClass} opacity-0 animate-slide-in`}
+                  }
+                  setMobileMenuOpen(false)
+                }}
+                className={`${navItemClass} opacity-0 animate-slide-in`}
+                style={{
+                  animationDelay: `${index * 100}ms`,
+                  animationFillMode: 'forwards',
+                }}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <hr
+              className="my-2 border-gray-200 dark:border-gray-700 opacity-0 animate-slide-in"
+              style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}
+            />
+            {session ? (
+              <>
+                <div
+                  className="py-2 px-3 text-sm text-gray-500 dark:text-gray-400 opacity-0 animate-slide-in"
                   style={{ animationDelay: '300ms', animationFillMode: 'forwards' }}
                 >
-                  Sign in
+                  {session.user?.name}
+                </div>
+                <button
+                  onClick={() => {
+                    signOut()
+                    setMobileMenuOpen(false)
+                  }}
+                  className={`${navItemClass} opacity-0 animate-slide-in`}
+                  style={{ animationDelay: '400ms', animationFillMode: 'forwards' }}
+                >
+                  Sign out
                 </button>
-              )}
-            </nav>
-          </aside>
-        </div>
-      )}
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  signIn('google')
+                  setMobileMenuOpen(false)
+                }}
+                className={`${navItemClass} opacity-0 animate-slide-in`}
+                style={{ animationDelay: '300ms', animationFillMode: 'forwards' }}
+              >
+                Sign in
+              </button>
+            )}
+          </nav>
+        </aside>
+      </div>
 
       {/* Custom slide-in animation keyframes */}
       <style jsx>{`

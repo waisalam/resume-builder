@@ -77,7 +77,6 @@ export default function HomePage() {
     return () => clearInterval(timer)
   }, [countersStarted])
 
-  // Testimonial autoplay
   useEffect(() => {
     const testimonialTimer = setInterval(() => {
       setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
@@ -142,25 +141,25 @@ export default function HomePage() {
   }
 
   return (
-    <div className="relative left-1/2 -translate-x-1/2 w-screen min-h-screen bg-black text-white overflow-x-hidden">
+    <main className="w-full min-h-screen bg-white text-gray-900 dark:bg-black dark:text-white overflow-x-hidden transition-colors duration-300">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black pt-20">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-white via-orange-50/10 to-white dark:from-black dark:via-gray-900 dark:to-black pt-20 transition-all duration-700">
         {/* Background effects */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-20 dark:opacity-20">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500 rounded-full mix-blend-screen filter blur-[128px] animate-pulse" style={{ animationDuration: '8s' }} />
           <div className="absolute top-1/3 right-1/3 w-80 h-80 bg-amber-500 rounded-full mix-blend-screen filter blur-[128px] animate-pulse" style={{ animationDuration: '10s' }} />
           <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-600 rounded-full mix-blend-screen filter blur-[128px] animate-pulse" style={{ animationDuration: '12s' }} />
         </div>
 
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 text-center">
           {/* Badge */}
-          <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-orange-500/20 animate-fade-in-down">
+          <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100/80 backdrop-blur-sm border border-orange-200/60 dark:bg-white/5 dark:border-orange-500/20 animate-fade-in-down">
             <Sparkles className="w-4 h-4 text-orange-500" />
-            <span className="text-sm font-medium bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent uppercase tracking-widest">
+            <span className="text-sm font-medium bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent uppercase tracking-widest">
               AI-Powered Resume Optimization
             </span>
           </div>
@@ -168,14 +167,14 @@ export default function HomePage() {
           {/* Headline */}
           <div className="h-24 sm:h-28 lg:h-32 mb-6">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight transition-all duration-500 animate-fade-in">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-orange-400">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-800 to-orange-600 dark:from-white dark:via-gray-100 dark:to-orange-400">
                 {headlines[headlineIndex]}
               </span>
             </h1>
           </div>
 
           {/* Subheading */}
-          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in animation-delay-200">
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in animation-delay-200">
             Get past ATS filters and land more interviews. Our AI analyzes your resume against job descriptions with 98% accuracy powered by 6000+ real resume data.
           </p>
 
@@ -190,7 +189,7 @@ export default function HomePage() {
                   window.location.href = '/analyzer'
                 }
               }}
-              className="relative group px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-bold text-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 inline-flex items-center gap-2"
+              className="relative group px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 inline-flex items-center gap-2"
             >
               <span className="relative z-10 flex items-center gap-2">
                 Analyze Resume
@@ -198,27 +197,27 @@ export default function HomePage() {
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </button>
-            <a
+            <Link
               href="/live-preview"
-              className="px-8 py-4 border border-orange-500/50 text-orange-400 font-bold text-lg rounded-xl backdrop-blur-sm bg-white/5 hover:bg-white/10 hover:border-orange-500 transition-all duration-300 inline-flex items-center gap-2 group hover:shadow-lg hover:shadow-orange-500/20"
+              className="px-8 py-4 border border-orange-300 bg-white/80 text-orange-600 font-bold text-lg rounded-xl backdrop-blur-sm hover:bg-orange-50 hover:border-orange-500 transition-all duration-300 inline-flex items-center gap-2 group hover:shadow-lg hover:shadow-orange-500/20 dark:bg-white/5 dark:text-orange-400 dark:border-orange-500/50 dark:hover:bg-white/10 dark:hover:border-orange-500 dark:hover:shadow-orange-500/20"
             >
               Build Resume
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
           </div>
 
           {/* Trust indicators */}
-          <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-500 animate-fade-in animation-delay-1000">
+          <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-500 dark:text-gray-500 animate-fade-in animation-delay-1000">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               No credit card required
             </div>
-            <div className="hidden sm:block w-px h-4 bg-gray-700" />
+            <div className="hidden sm:block w-px h-4 bg-gray-300 dark:bg-gray-700" />
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               Free analysis
             </div>
-            <div className="hidden sm:block w-px h-4 bg-gray-700" />
+            <div className="hidden sm:block w-px h-4 bg-gray-300 dark:bg-gray-700" />
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               Instant results
@@ -228,24 +227,24 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="relative py-24 bg-gradient-to-b from-black via-gray-900/30 to-black">
+      <section className="relative py-24 bg-gray-50/80 dark:bg-gradient-to-b dark:from-black dark:via-gray-900/30 dark:to-black transition-all">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent" />
         
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 animate-fade-in">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 animate-fade-in">
               Everything You Need
             </h2>
-            <p className="text-lg text-gray-400 animate-fade-in animation-delay-100">
+            <p className="text-lg text-gray-600 dark:text-gray-400 animate-fade-in animation-delay-100">
               Powerful features to supercharge your job search
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-orange-500/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/5 animate-fade-in"
+                className="group relative p-6 rounded-2xl bg-white border border-gray-200 hover:border-orange-300 shadow-sm hover:shadow-lg transition-all duration-500 hover:-translate-y-1 dark:bg-white/5 dark:border-white/10 dark:hover:border-orange-500/40 dark:hover:shadow-xl dark:hover:shadow-orange-500/5 animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -255,8 +254,8 @@ export default function HomePage() {
                     <feature.icon className="w-full h-full text-white" />
                   </div>
                   
-                  <h3 className="text-lg font-semibold text-white mb-3">{feature.title}</h3>
-                  <p className="text-sm text-gray-400 leading-relaxed flex-grow">{feature.description}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed flex-grow">{feature.description}</p>
                 </div>
               </div>
             ))}
@@ -265,60 +264,60 @@ export default function HomePage() {
       </section>
 
       {/* Statistics Section */}
-      <section ref={countersRef} className="relative py-24 bg-gradient-to-b from-black to-gray-900/50 border-y border-gray-800/50">
+      <section ref={countersRef} className="relative py-24 bg-white dark:bg-gradient-to-b dark:from-black dark:to-gray-900/50 border-y border-gray-200 dark:border-gray-800/50 transition-all">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent" />
         
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-8">
+        <div className="relative z-10 max-w-5xl mx-auto px-6 sm:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center group">
-              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
                 {counts.resumes.toLocaleString()}+
               </div>
-              <div className="text-sm font-medium text-gray-400">Resumes Analyzed</div>
-              <div className="text-xs text-gray-600 mt-1">And counting</div>
+              <div className="text-sm font-medium text-gray-600 dark:text-gray-400">Resumes Analyzed</div>
+              <div className="text-xs text-gray-500 dark:text-gray-600 mt-1">And counting</div>
             </div>
             <div className="text-center group">
-              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
                 {counts.improvement}%
               </div>
-              <div className="text-sm font-medium text-gray-400">ATS Score Improvement</div>
-              <div className="text-xs text-gray-600 mt-1">Average increase</div>
+              <div className="text-sm font-medium text-gray-600 dark:text-gray-400">ATS Score Improvement</div>
+              <div className="text-xs text-gray-500 dark:text-gray-600 mt-1">Average increase</div>
             </div>
             <div className="text-center group">
-              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
                 {counts.users.toLocaleString()}+
               </div>
-              <div className="text-sm font-medium text-gray-400">Active Users</div>
-              <div className="text-xs text-gray-600 mt-1">Growing daily</div>
+              <div className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Users</div>
+              <div className="text-xs text-gray-500 dark:text-gray-600 mt-1">Growing daily</div>
             </div>
             <div className="text-center group">
-              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
                 {counts.interviews.toLocaleString()}+
               </div>
-              <div className="text-sm font-medium text-gray-400">Interviews Landed</div>
-              <div className="text-xs text-gray-600 mt-1">Success stories</div>
+              <div className="text-sm font-medium text-gray-600 dark:text-gray-400">Interviews Landed</div>
+              <div className="text-xs text-gray-500 dark:text-gray-600 mt-1">Success stories</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Testimonials Carousel */}
-      <section className="relative py-24 bg-gradient-to-b from-gray-900/50 to-black">
-        <div className="w-full max-w-4xl mx-auto px-6 sm:px-8">
+      <section className="relative py-24 bg-gray-50/80 dark:bg-gradient-to-b dark:from-gray-900/50 dark:to-black transition-all">
+        <div className="max-w-4xl mx-auto px-6 sm:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 animate-fade-in">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 animate-fade-in">
               What Our Users Say
             </h2>
-            <p className="text-lg text-gray-400 animate-fade-in animation-delay-100">
+            <p className="text-lg text-gray-600 dark:text-gray-400 animate-fade-in animation-delay-100">
               Join thousands of satisfied job seekers
             </p>
           </div>
 
           <div className="relative animate-fade-in animation-delay-200">
-            <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 sm:p-10 transition-all duration-500">
+            <div className="relative bg-white border border-gray-200 rounded-2xl p-8 sm:p-10 shadow-sm transition-all duration-500 dark:bg-white/5 dark:border-white/10 dark:backdrop-blur-sm">
               <Quote className="w-10 h-10 text-orange-500/30 mb-6" />
-              <blockquote className="text-xl sm:text-2xl text-gray-200 mb-8 leading-relaxed font-light italic">
-                "{testimonials[activeTestimonial].quote}"
+              <blockquote className="text-xl sm:text-2xl text-gray-800 dark:text-gray-200 mb-8 leading-relaxed font-light italic">
+                &ldquo;{testimonials[activeTestimonial].quote}&rdquo;
               </blockquote>
               
               <div className="flex items-center gap-1 mb-6">
@@ -327,22 +326,22 @@ export default function HomePage() {
                 ))}
               </div>
 
-              <div className="border-t border-white/10 pt-6 flex items-center justify-between">
+              <div className="border-t border-gray-200 dark:border-white/10 pt-6 flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-white">{testimonials[activeTestimonial].author}</div>
-                  <div className="text-gray-400 text-sm">{testimonials[activeTestimonial].role}</div>
+                  <div className="font-semibold text-gray-900 dark:text-white">{testimonials[activeTestimonial].author}</div>
+                  <div className="text-gray-500 dark:text-gray-400 text-sm">{testimonials[activeTestimonial].role}</div>
                 </div>
                 <div className="flex items-center gap-3">
                   <button
                     onClick={previousTestimonial}
-                    className="p-2 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-orange-500/50 transition-all"
+                    className="p-2 rounded-full bg-gray-100 border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-400 dark:bg-white/5 dark:border-white/10 dark:text-gray-400 dark:hover:text-white dark:hover:border-orange-500/50 transition-all"
                     aria-label="Previous testimonial"
                   >
                     <ChevronLeft size={20} />
                   </button>
                   <button
                     onClick={nextTestimonial}
-                    className="p-2 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-orange-500/50 transition-all"
+                    className="p-2 rounded-full bg-gray-100 border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-400 dark:bg-white/5 dark:border-white/10 dark:text-gray-400 dark:hover:text-white dark:hover:border-orange-500/50 transition-all"
                     aria-label="Next testimonial"
                   >
                     <ChevronRight size={20} />
@@ -357,8 +356,8 @@ export default function HomePage() {
                 <button
                   key={index}
                   onClick={() => setActiveTestimonial(index)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    index === activeTestimonial ? 'bg-orange-500 w-8' : 'bg-gray-600 hover:bg-gray-400'
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    index === activeTestimonial ? 'w-8 bg-orange-500' : 'w-2.5 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-400'
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -369,13 +368,13 @@ export default function HomePage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-24 bg-black">
-        <div className="w-full max-w-7xl mx-auto px-6 sm:px-8">
+      <section className="py-24 bg-white dark:bg-black transition-all">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 animate-fade-in">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 animate-fade-in">
               How It Works
             </h2>
-            <p className="text-lg text-gray-400 animate-fade-in animation-delay-100">
+            <p className="text-lg text-gray-600 dark:text-gray-400 animate-fade-in animation-delay-100">
               Three simple steps to optimize your resume
             </p>
           </div>
@@ -403,15 +402,15 @@ export default function HomePage() {
             ].map((item, index) => (
               <div
                 key={index}
-                className="group relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl animate-fade-in"
+                className="group relative p-8 rounded-2xl bg-gray-50 border border-gray-200 hover:border-orange-300 shadow-sm hover:shadow-lg transition-all duration-500 hover:-translate-y-1 dark:bg-white/5 dark:border-white/10 dark:hover:border-orange-500/30 dark:hover:shadow-xl animate-fade-in"
                 style={{ animationDelay: `${index * 200}ms` }}
               >
                 <div className="text-6xl font-black text-orange-500/10 mb-4 select-none">{item.step}</div>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                  <item.icon className="w-6 h-6 text-orange-500" />
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 dark:from-orange-500/20 dark:to-amber-500/20">
+                  <item.icon className="w-6 h-6 text-orange-600 dark:text-orange-500" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-3">{item.title}</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">{item.description}</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{item.title}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
@@ -419,14 +418,14 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="relative py-24 bg-gradient-to-b from-black via-gray-900/20 to-black border-t border-gray-800/50">
+      <section className="relative py-24 bg-gray-50/80 dark:bg-gradient-to-b dark:from-black dark:via-gray-900/20 dark:to-black border-t border-gray-200 dark:border-gray-800/50 transition-all">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent" />
         
-        <div className="relative z-10 w-full max-w-4xl mx-auto px-6 sm:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6 animate-fade-in">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 sm:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6 animate-fade-in">
             Ready to Transform Your Job Search?
           </h2>
-          <p className="text-lg text-gray-400 mb-10 animate-fade-in animation-delay-100">
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 animate-fade-in animation-delay-100">
             Join thousands of professionals who have improved their ATS scores and landed their dream jobs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animation-delay-200">
@@ -439,51 +438,51 @@ export default function HomePage() {
                   window.location.href = '/analyzer'
                 }
               }}
-              className="relative group px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-bold text-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 inline-flex items-center gap-2"
+              className="relative group px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 inline-flex items-center gap-2"
             >
               <span className="relative z-10 flex items-center gap-2">
                 Start Free Analysis
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
-            <a
+            <Link
               href="/live-preview"
-              className="px-8 py-4 border border-orange-500/50 text-orange-400 font-bold text-lg rounded-xl backdrop-blur-sm bg-white/5 hover:bg-white/10 hover:border-orange-500 transition-all duration-300 inline-flex items-center gap-2 group hover:shadow-lg hover:shadow-orange-500/20"
+              className="px-8 py-4 border border-orange-300 bg-white/80 text-orange-600 font-bold text-lg rounded-xl backdrop-blur-sm hover:bg-orange-50 hover:border-orange-500 transition-all duration-300 inline-flex items-center gap-2 group hover:shadow-lg hover:shadow-orange-500/20 dark:bg-white/5 dark:text-orange-400 dark:border-orange-500/50 dark:hover:bg-white/10 dark:hover:border-orange-500 dark:hover:shadow-orange-500/20"
             >
               Build Resume
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-black border-t border-gray-800/50 py-12">
-        <div className="w-full max-w-7xl mx-auto px-6 sm:px-8">
+      <footer className="bg-white dark:bg-black border-t border-gray-200 dark:border-gray-800/50 py-12 transition-all">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2">
-              <h3 className="text-lg font-semibold text-white mb-4">ATS Analyzer</h3>
-              <p className="text-gray-400 text-sm max-w-xs">AI-powered resume optimization to help you land more interviews.</p>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">ATS Analyzer</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm max-w-xs">AI-powered resume optimization to help you land more interviews.</p>
             </div>
             <div>
-              <h4 className="font-semibold text-white mb-4">Product</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="/analyzer" className="hover:text-orange-400 transition-colors">Analyze Resume</a></li>
-                <li><a href="/live-preview" className="hover:text-orange-400 transition-colors">Build Resume</a></li>
-                <li><a href="#" className="hover:text-orange-400 transition-colors">Pricing</a></li>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Product</h4>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li><Link href="/analyzer" className="hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Analyze Resume</Link></li>
+                <li><Link href="/live-preview" className="hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Build Resume</Link></li>
+                <li><Link href="#" className="hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Pricing</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-white mb-4">Company</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-orange-400 transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-orange-400 transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-orange-400 transition-colors">Contact</a></li>
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Company</h4>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <li><Link href="#" className="hover:text-orange-600 dark:hover:text-orange-400 transition-colors">About</Link></li>
+                <li><Link href="#" className="hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Blog</Link></li>
+                <li><Link href="#" className="hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Contact</Link></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800/50 pt-8 text-center text-gray-500 text-sm">
-            <p>ATS Analyzer • Powered by AI trained on 6000+ resume data</p>
+          <div className="border-t border-gray-200 dark:border-gray-800 pt-8 text-center text-gray-500 dark:text-gray-500 text-sm">
+            <p>ATS Analyzer &bull; Powered by AI trained on 6000+ resume data</p>
           </div>
         </div>
       </footer>
@@ -546,11 +545,15 @@ export default function HomePage() {
         }
 
         ::-webkit-scrollbar-track {
+          background: #f1f5f9;
+        }
+
+        .dark ::-webkit-scrollbar-track {
           background: #000000;
         }
 
         ::-webkit-scrollbar-thumb {
-          background: rgba(249, 115, 22, 0.6);
+          background: rgba(249, 115, 22, 0.4);
           border-radius: 4px;
         }
 
@@ -558,6 +561,6 @@ export default function HomePage() {
           background: rgba(249, 115, 22, 0.8);
         }
       `}</style>
-    </div>
+    </main>
   )
 }

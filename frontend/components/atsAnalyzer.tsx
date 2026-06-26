@@ -2,7 +2,6 @@
 
 import React, { useState, useCallback } from 'react'
 import { CheckCircle2, AlertCircle, Upload, Zap, Loader, Info, FileText, Search, PenTool } from 'lucide-react'
-import Navbar from '@/components/navbar'
 import { useSession } from 'next-auth/react'
 
 interface AnalysisResult {
@@ -89,10 +88,11 @@ const AtsAnalyzer = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Navbar />
+    <div className="w-full bg-zinc-950/50 backdrop-blur-sm py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto bg-zinc-900/80 backdrop-blur-md border border-zinc-800 rounded-2xl p-6 md:p-8 shadow-2xl shadow-black/50 relative overflow-hidden">
+        {/* Gradient accent bar */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 via-purple-500 to-pink-500" />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Disclaimer Banner */}
         <div className="bg-amber-900/20 border border-amber-600/50 border-l-4 border-l-amber-500 rounded-lg p-4 mb-8 flex items-start gap-3 animate-fade-in">
           <Info className="text-amber-500 flex-shrink-0 mt-0.5" size={20} />
@@ -109,121 +109,121 @@ const AtsAnalyzer = () => {
 
         {/* Header */}
         <div className="mb-12 text-center animate-fade-in animation-delay-100">
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-pink-500">
             ATS Resume Analyzer
           </h1>
           <p className="text-base md:text-lg text-zinc-400 mb-6 max-w-2xl mx-auto">
             Get instant insights on how well your resume matches job descriptions and identify missing keywords to increase your chances of passing ATS filters.
           </p>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30">
-            <Zap size={16} />
-            <span className="text-xs font-semibold uppercase tracking-wide">AI-Powered Analysis</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/10 to-pink-500/10 border border-orange-500/30">
+            <Zap size={16} className="text-orange-400" />
+            <span className="text-xs font-semibold uppercase tracking-wide text-orange-400">AI-Powered Analysis</span>
           </div>
         </div>
 
         <div className="space-y-8">
           {/* Input Section */}
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 md:p-8 shadow-xl shadow-black/50 hover:shadow-orange-500/5 transition-all duration-300 animate-fade-in animation-delay-200">
-            <div className="space-y-6">
-              {/* Job Description */}
-              <div>
-                <label htmlFor="job-desc" className="block text-sm font-semibold mb-3 text-white">
-                  Job Description
-                </label>
-                <textarea
-                  id="job-desc"
-                  placeholder="Paste the complete job description here..."
-                  value={jobDescription}
-                  onChange={(e) => setJobDescription(e.target.value)}
-                  className="w-full min-h-40 resize-none border border-zinc-700 rounded-xl p-4 bg-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
-                />
-              </div>
-
-              {/* Resume Upload */}
-              <div>
-                <label className="block text-sm font-semibold mb-3 text-white">
-                  Resume File
-                </label>
-                <div
-                  onDragEnter={handleDrag}
-                  onDragLeave={handleDrag}
-                  onDragOver={handleDrag}
-                  onDrop={handleDrop}
-                  className={`relative border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-300 ${
-                    dragActive
-                      ? 'border-orange-500 bg-orange-500/10 scale-[1.02]'
-                      : 'border-zinc-700 hover:border-orange-500/50 hover:bg-orange-500/5'
-                  }`}
-                >
-                  <input
-                    type="file"
-                    accept=".pdf,.doc,.docx,.txt"
-                    onChange={handleFileChange}
-                    className="hidden"
-                    id="resume-input"
-                  />
-                  <label htmlFor="resume-input" className="cursor-pointer">
-                    <div className="flex flex-col items-center gap-3">
-                      <Upload className="text-orange-500 group-hover:scale-110 transition-transform" size={24} />
-                      <div>
-                        <p className="text-sm font-medium text-white">
-                          {fileName || 'Click to upload or drag and drop'}
-                        </p>
-                        <p className="text-xs text-zinc-500 mt-1">
-                          PDF, DOC, DOCX, or TXT
-                        </p>
-                      </div>
-                    </div>
-                  </label>
-                </div>
-              </div>
-
-              {/* Error Alert */}
-              {error && (
-                <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-3 animate-fade-in">
-                  <AlertCircle className="text-red-400" size={20} />
-                  <p className="text-red-300 text-sm">{error}</p>
-                </div>
-              )}
-
-              {/* Analyze Button */}
-              <button
-                onClick={handleAnalyze}
-                disabled={loading}
-                className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                  loading
-                    ? 'bg-orange-400/80 text-black cursor-not-allowed'
-                    : 'bg-orange-500 hover:bg-orange-600 text-black hover:shadow-lg hover:shadow-orange-500/25 hover:scale-[1.02]'
-                } disabled:opacity-50 disabled:scale-100`}
-              >
-                {loading ? (
-                  <>
-                    <Loader size={20} className="animate-spin" />
-                    Analyzing...
-                  </>
-                ) : (
-                  <>
-                    <Zap size={18} />
-                    Analyze Resume
-                  </>
-                )}
-              </button>
+          <div className="space-y-6 animate-fade-in animation-delay-200">
+            {/* Job Description */}
+            <div>
+              <label htmlFor="job-desc" className="block text-sm font-semibold mb-3 text-white">
+                Job Description
+              </label>
+              <textarea
+                id="job-desc"
+                placeholder="Paste the complete job description here..."
+                value={jobDescription}
+                onChange={(e) => setJobDescription(e.target.value)}
+                className="w-full min-h-40 resize-none border border-zinc-700 rounded-xl p-4 bg-zinc-800/50 backdrop-blur-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300"
+              />
             </div>
+
+            {/* Resume Upload */}
+            <div>
+              <label className="block text-sm font-semibold mb-3 text-white">
+                Resume File
+              </label>
+              <div
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={handleDrop}
+                className={`relative border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-300 ${
+                  dragActive
+                    ? 'border-orange-500 bg-orange-500/10 scale-[1.02] shadow-lg shadow-orange-500/20'
+                    : 'border-zinc-700 hover:border-orange-500/50 hover:bg-gradient-to-br hover:from-orange-500/5 hover:to-pink-500/5'
+                }`}
+              >
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx,.txt"
+                  onChange={handleFileChange}
+                  className="hidden"
+                  id="resume-input"
+                />
+                <label htmlFor="resume-input" className="cursor-pointer">
+                  <div className="flex flex-col items-center gap-3">
+                    <Upload className="text-orange-500 group-hover:scale-110 transition-transform" size={24} />
+                    <div>
+                      <p className="text-sm font-medium text-white">
+                        {fileName || 'Click to upload or drag and drop'}
+                      </p>
+                      <p className="text-xs text-zinc-500 mt-1">
+                        PDF, DOC, DOCX, or TXT
+                      </p>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            {/* Error Alert */}
+            {error && (
+              <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 flex items-center gap-3 animate-fade-in">
+                <AlertCircle className="text-red-400" size={20} />
+                <p className="text-red-300 text-sm">{error}</p>
+              </div>
+            )}
+
+            {/* Analyze Button */}
+            <button
+              onClick={handleAnalyze}
+              disabled={loading}
+              className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                loading
+                  ? 'bg-gradient-to-r from-orange-400/80 to-pink-400/80 text-black cursor-not-allowed'
+                  : 'bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-black hover:shadow-lg hover:shadow-orange-500/25 hover:scale-[1.02]'
+              } disabled:opacity-50 disabled:scale-100`}
+            >
+              {loading ? (
+                <>
+                  <Loader size={20} className="animate-spin" />
+                  Analyzing...
+                </>
+              ) : (
+                <>
+                  <Zap size={18} />
+                  Analyze Resume
+                </>
+              )}
+            </button>
           </div>
 
           {/* Results Section */}
           {result && (
             <div className="space-y-6 animate-fade-in animation-delay-200">
               {/* Score Card */}
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 md:p-8 shadow-xl hover:shadow-orange-500/5 transition-all duration-300">
+              <div className="bg-zinc-800/50 border border-zinc-700 rounded-2xl p-6 md:p-8 shadow-xl hover:shadow-orange-500/5 transition-all duration-300">
                 <h2 className="text-xl font-bold mb-8">Analysis Results</h2>
                 <div className="grid gap-8 md:grid-cols-2">
                   {/* Match Percentage */}
                   <div className="flex flex-col items-center justify-center">
                     <p className="text-sm font-medium text-zinc-400 mb-6">Match Score</p>
-                    <div className="w-48 h-48 rounded-full border-4 border-orange-500 bg-zinc-800 flex flex-col items-center justify-center shadow-lg shadow-orange-500/20">
-                      <span className="text-5xl font-bold text-orange-400">{Math.round(result.ats_score)}%</span>
-                      <span className="text-xs text-zinc-400 mt-1">ATS Compatible</span>
+                    <div className="w-48 h-48 rounded-full border-4 border-transparent bg-gradient-to-br from-orange-500 to-pink-500 p-[4px] bg-zinc-800 flex flex-col items-center justify-center shadow-lg shadow-orange-500/20">
+                      <div className="w-full h-full rounded-full bg-zinc-800 flex flex-col items-center justify-center">
+                        <span className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-400">{Math.round(result.ats_score)}%</span>
+                        <span className="text-xs text-zinc-400 mt-1">ATS Compatible</span>
+                      </div>
                     </div>
                   </div>
 
@@ -235,16 +235,18 @@ const AtsAnalyzer = () => {
                       <div>
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-semibold text-white">Overall ATS Score</span>
-                          <span className="text-2xl font-bold text-orange-400">{Math.round(result.ats_score)}/100</span>
+                          <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-400">
+                            {Math.round(result.ats_score)}/100
+                          </span>
                         </div>
-                        <div className="h-3 rounded-full overflow-hidden bg-zinc-800 border border-zinc-700">
+                        <div className="h-3 rounded-full overflow-hidden bg-zinc-700 border border-zinc-600">
                           <div
                             className={`h-full transition-all duration-500 ${
                               result.ats_score >= 75
-                                ? 'bg-green-500'
+                                ? 'bg-gradient-to-r from-green-500 to-emerald-500'
                                 : result.ats_score >= 50
-                                ? 'bg-orange-500'
-                                : 'bg-red-500'
+                                ? 'bg-gradient-to-r from-orange-500 to-amber-500'
+                                : 'bg-gradient-to-r from-red-500 to-pink-500'
                             }`}
                             style={{ width: `${result.ats_score}%` }}
                           />
@@ -285,13 +287,13 @@ const AtsAnalyzer = () => {
               {/* Keywords Section */}
               <div className="grid gap-6 md:grid-cols-2">
                 {/* Matched Keywords */}
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-green-500/30 transition-all duration-300">
+                <div className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-6 hover:border-green-500/30 transition-all duration-300">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="p-2 rounded-lg bg-green-900/30 text-green-400">
                       <CheckCircle2 size={18} />
                     </div>
                     <h3 className="text-lg font-semibold text-white">Matched Keywords</h3>
-                    <span className="ml-auto px-3 py-1 rounded-full text-xs font-bold bg-green-500 text-black">
+                    <span className="ml-auto px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-black">
                       {result.found_skills?.length || 0}
                     </span>
                   </div>
@@ -312,13 +314,13 @@ const AtsAnalyzer = () => {
                 </div>
 
                 {/* Missing Keywords */}
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-red-500/30 transition-all duration-300">
+                <div className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-6 hover:border-red-500/30 transition-all duration-300">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="p-2 rounded-lg bg-red-900/30 text-red-400">
                       <AlertCircle size={18} />
                     </div>
                     <h3 className="text-lg font-semibold text-white">Missing Keywords</h3>
-                    <span className="ml-auto px-3 py-1 rounded-full text-xs font-bold bg-red-500 text-black">
+                    <span className="ml-auto px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-red-500 to-pink-500 text-black">
                       {result.missing_skills?.length || 0}
                     </span>
                   </div>
@@ -340,7 +342,7 @@ const AtsAnalyzer = () => {
               </div>
 
               {/* Recommendations */}
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-orange-500/30 transition-all duration-300">
+              <div className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-6 hover:border-orange-500/30 transition-all duration-300">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-white">
                   <Zap className="text-orange-500" size={20} />
                   Quick Tips to Improve
@@ -369,7 +371,7 @@ const AtsAnalyzer = () => {
                   setResume(null)
                   setFileName('')
                 }}
-                className="w-full py-3 rounded-xl border-2 border-orange-500 text-orange-400 font-semibold transition-all duration-300 hover:bg-orange-500/10 hover:shadow-lg hover:shadow-orange-500/20"
+                className="w-full py-3 rounded-xl border-2 border-orange-500/50 text-orange-400 font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-orange-500/10 hover:to-pink-500/10 hover:shadow-lg hover:shadow-orange-500/20 hover:border-orange-500"
               >
                 Analyze Another Resume
               </button>
@@ -378,8 +380,10 @@ const AtsAnalyzer = () => {
 
           {/* Coming Soon Features */}
           {!result && (
-            <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-8 mt-12 animate-fade-in animation-delay-300">
-              <h2 className="text-2xl font-bold mb-2">Coming Soon</h2>
+            <div className="mt-12 animate-fade-in animation-delay-300">
+              <h2 className="text-2xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-pink-500">
+                Coming Soon
+              </h2>
               <p className="text-zinc-400 mb-8 text-sm leading-relaxed">
                 More AI-powered tools to accelerate your job search and resume optimization:
               </p>
