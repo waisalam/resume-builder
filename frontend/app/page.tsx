@@ -10,7 +10,9 @@ export function generateMetadata() {
 export default function Page() {
   return (
     <main className="min-h-screen bg-background w-full">
-      <HomePage />
+      <div className="w-full">
+        <HomePage />
+      </div>
     </main>
   )
 }
