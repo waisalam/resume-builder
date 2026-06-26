@@ -92,17 +92,13 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
     <nav
       ref={navRef}
       aria-label="Main navigation"
-      style={{ borderBottom: '1px solid #222222', backgroundColor: '#000000' }}
+      className="bg-black border-b border-zinc-800"
     >
-      <div className="max-w-6xl mx-auto px-6 py-4">
+      <div className="w-full px-6 lg:px-12 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/">
-            <div
-              style={{ color: '#ff8c00' }}
-              className="text-2xl font-bold flex items-center gap-2 cursor-pointer hover:opacity-80 transition"
-              aria-label="ATS Analyzer home"
-            >
+            <div className="text-2xl font-bold flex items-center gap-2 cursor-pointer hover:opacity-80 transition text-[#ff8c00]" aria-label="ATS Analyzer home">
               <Zap size={28} />
               ATS Analyzer
             </div>
@@ -154,7 +150,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -8 }}
                                 transition={{ duration: 0.2 }}
-                                className="absolute top-full left-0 mt-2 w-48 rounded-lg bg-[#111111] border border-[#222222] shadow-xl py-2 z-50"
+                                className="absolute top-full left-0 mt-2 w-48 rounded-lg bg-[#111111] border border-zinc-800 shadow-xl py-2 z-50"
                                 role="menu"
                               >
                                 {item.children!.map((child) => (
@@ -201,10 +197,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
 
             {/* CTA Button (desktop) */}
             <Link href="/analyzer" className="ml-6">
-              <button
-                style={{ backgroundColor: '#ff8c00', color: '#000000' }}
-                className="px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition cursor-pointer"
-              >
+              <button className="px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition cursor-pointer bg-[#ff8c00] text-black">
                 Get Started
               </button>
             </Link>
@@ -280,7 +273,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                                 {item.children!.map((child) => (
                                   <motion.li
                                     key={child.id}
-                                    variants={mobileItem} // stagger within submenu?
+                                    variants={mobileItem}
                                     custom={index * 0.1}
                                     role="menuitem"
                                   >
@@ -321,10 +314,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
               {/* Mobile CTA */}
               <motion.div variants={mobileItem} custom={navItems.length} className="mt-4">
                 <Link href="/analyzer" onClick={() => setIsMobileOpen(false)}>
-                  <button
-                    style={{ backgroundColor: '#ff8c00', color: '#000000' }}
-                    className="w-full px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition"
-                  >
+                  <button className="w-full px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition bg-[#ff8c00] text-black">
                     Get Started
                   </button>
                 </Link>

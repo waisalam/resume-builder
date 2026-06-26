@@ -35,6 +35,27 @@ function ThemeProviderInner({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
+  // Global full-width fix and redesign reset
+  React.useEffect(() => {
+    const style = document.createElement('style')
+    style.innerHTML = `
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        overflow-x: hidden;
+      }
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+    `
+    document.head.appendChild(style)
+    return () => {
+      document.head.removeChild(style)
+    }
+  }, [])
+
   const toggleTheme = React.useCallback(() => {
     const themes = ['light', 'dark', 'system']
     const currentTheme = theme || 'system'
