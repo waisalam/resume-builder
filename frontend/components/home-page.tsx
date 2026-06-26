@@ -142,23 +142,22 @@ export default function HomePage() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-black text-white overflow-x-hidden">
+    <div className="relative left-1/2 -translate-x-1/2 w-screen min-h-screen bg-black text-white overflow-x-hidden">
       <Navbar />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black pt-20">
-        {/* Subtle background animations */}
+        {/* Background effects */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500 rounded-full mix-blend-screen filter blur-[128px] animate-pulse duration-[8000ms]" />
-          <div className="absolute top-1/3 right-1/3 w-80 h-80 bg-amber-500 rounded-full mix-blend-screen filter blur-[128px] animate-pulse duration-[10000ms]" />
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-600 rounded-full mix-blend-screen filter blur-[128px] animate-pulse duration-[12000ms]" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500 rounded-full mix-blend-screen filter blur-[128px] animate-pulse" style={{ animationDuration: '8s' }} />
+          <div className="absolute top-1/3 right-1/3 w-80 h-80 bg-amber-500 rounded-full mix-blend-screen filter blur-[128px] animate-pulse" style={{ animationDuration: '10s' }} />
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-600 rounded-full mix-blend-screen filter blur-[128px] animate-pulse" style={{ animationDuration: '12s' }} />
         </div>
 
-        {/* Grid Pattern Overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 text-center">
-          {/* Animated Badge */}
+          {/* Badge */}
           <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-orange-500/20 animate-fade-in-down">
             <Sparkles className="w-4 h-4 text-orange-500" />
             <span className="text-sm font-medium bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent uppercase tracking-widest">
@@ -166,7 +165,7 @@ export default function HomePage() {
             </span>
           </div>
 
-          {/* Animated Headline */}
+          {/* Headline */}
           <div className="h-24 sm:h-28 lg:h-32 mb-6">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight transition-all duration-500 animate-fade-in">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-orange-400">
@@ -180,7 +179,7 @@ export default function HomePage() {
             Get past ATS filters and land more interviews. Our AI analyzes your resume against job descriptions with 98% accuracy powered by 6000+ real resume data.
           </p>
 
-          {/* CTA Buttons */}
+          {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in animation-delay-300">
             <button
               onClick={(e) => {
@@ -208,7 +207,7 @@ export default function HomePage() {
             </a>
           </div>
 
-          {/* Trust Indicators */}
+          {/* Trust indicators */}
           <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-500 animate-fade-in animation-delay-1000">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
@@ -249,7 +248,6 @@ export default function HomePage() {
                 className="group relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-orange-500/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/5 animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                {/* Soft gradient overlay on hover */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 
                 <div className="relative z-10 flex flex-col h-full">
@@ -317,7 +315,6 @@ export default function HomePage() {
           </div>
 
           <div className="relative animate-fade-in animation-delay-200">
-            {/* Main card */}
             <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 sm:p-10 transition-all duration-500">
               <Quote className="w-10 h-10 text-orange-500/30 mb-6" />
               <blockquote className="text-xl sm:text-2xl text-gray-200 mb-8 leading-relaxed font-light italic">
