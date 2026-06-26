@@ -115,7 +115,7 @@ const AtsAnalyzer = () => {
           <p className="text-base md:text-lg text-zinc-400 mb-6 max-w-2xl mx-auto">
             Get instant insights on how well your resume matches job descriptions and identify missing keywords to increase your chances of passing ATS filters.
           </p>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 text-red-400 border border-red-500/30">
             <Zap size={16} />
             <span className="text-xs font-semibold uppercase tracking-wide">AI-Powered Analysis</span>
           </div>
@@ -123,7 +123,7 @@ const AtsAnalyzer = () => {
 
         <div className="space-y-8">
           {/* Input Section */}
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 md:p-8 shadow-xl shadow-black/50 hover:shadow-orange-500/5 transition-all duration-300 animate-fade-in animation-delay-200">
+          <div className="bg-[#1a1a1a] border border-zinc-800 rounded-2xl p-6 md:p-8 shadow-xl shadow-black/50 hover:shadow-red-500/5 transition-all duration-300 animate-fade-in animation-delay-200">
             <div className="space-y-6">
               {/* Job Description */}
               <div>
@@ -135,7 +135,7 @@ const AtsAnalyzer = () => {
                   placeholder="Paste the complete job description here..."
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
-                  className="w-full min-h-40 resize-none border border-zinc-700 rounded-xl p-4 bg-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                  className="w-full min-h-40 resize-none border border-zinc-700 rounded-xl p-4 bg-[#2a2a2a] text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
                 />
               </div>
 
@@ -151,8 +151,8 @@ const AtsAnalyzer = () => {
                   onDrop={handleDrop}
                   className={`relative border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-300 ${
                     dragActive
-                      ? 'border-orange-500 bg-orange-500/10 scale-[1.02]'
-                      : 'border-zinc-700 hover:border-orange-500/50 hover:bg-orange-500/5'
+                      ? 'border-red-500 bg-red-500/10 scale-[1.02]'
+                      : 'border-zinc-700 hover:border-red-500/50 hover:bg-red-500/5'
                   }`}
                 >
                   <input
@@ -164,7 +164,7 @@ const AtsAnalyzer = () => {
                   />
                   <label htmlFor="resume-input" className="cursor-pointer">
                     <div className="flex flex-col items-center gap-3">
-                      <Upload className="text-orange-500 group-hover:scale-110 transition-transform" size={24} />
+                      <Upload className="text-red-500 group-hover:scale-110 transition-transform" size={24} />
                       <div>
                         <p className="text-sm font-medium text-white">
                           {fileName || 'Click to upload or drag and drop'}
@@ -190,11 +190,11 @@ const AtsAnalyzer = () => {
               <button
                 onClick={handleAnalyze}
                 disabled={loading}
-                className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-100 ${
                   loading
-                    ? 'bg-orange-400/80 text-black cursor-not-allowed'
-                    : 'bg-orange-500 hover:bg-orange-600 text-black hover:shadow-lg hover:shadow-orange-500/25 hover:scale-[1.02]'
-                } disabled:opacity-50 disabled:scale-100`}
+                    ? 'bg-red-500 text-white cursor-not-allowed animate-pulse-red'
+                    : 'bg-red-500 hover:bg-red-600 text-white hover:shadow-lg hover:shadow-red-500/25 hover:scale-[1.02]'
+                }`}
               >
                 {loading ? (
                   <>
@@ -215,15 +215,15 @@ const AtsAnalyzer = () => {
           {result && (
             <div className="space-y-6 animate-fade-in animation-delay-200">
               {/* Score Card */}
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-6 md:p-8 shadow-xl hover:shadow-orange-500/5 transition-all duration-300">
-                <h2 className="text-xl font-bold mb-8">Analysis Results</h2>
+              <div className="bg-[#1a1a1a] border border-zinc-800 rounded-2xl p-6 md:p-8 shadow-xl hover:shadow-red-500/5 transition-all duration-300">
+                <h2 className="text-xl font-bold mb-8 text-white">Analysis Results</h2>
                 <div className="grid gap-8 md:grid-cols-2">
                   {/* Match Percentage */}
                   <div className="flex flex-col items-center justify-center">
                     <p className="text-sm font-medium text-zinc-400 mb-6">Match Score</p>
-                    <div className="w-48 h-48 rounded-full border-4 border-orange-500 bg-zinc-800 flex flex-col items-center justify-center shadow-lg shadow-orange-500/20">
-                      <span className="text-5xl font-bold text-orange-400">{Math.round(result.ats_score)}%</span>
-                      <span className="text-xs text-zinc-400 mt-1">ATS Compatible</span>
+                    <div className="w-48 h-48 rounded-full bg-gradient-to-br from-red-500 to-red-800 flex flex-col items-center justify-center shadow-lg shadow-red-500/30">
+                      <span className="text-5xl font-bold text-white">{Math.round(result.ats_score)}%</span>
+                      <span className="text-xs text-zinc-300 mt-1">ATS Compatible</span>
                     </div>
                   </div>
 
@@ -235,7 +235,7 @@ const AtsAnalyzer = () => {
                       <div>
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-semibold text-white">Overall ATS Score</span>
-                          <span className="text-2xl font-bold text-orange-400">{Math.round(result.ats_score)}/100</span>
+                          <span className="text-2xl font-bold text-red-400">{Math.round(result.ats_score)}/100</span>
                         </div>
                         <div className="h-3 rounded-full overflow-hidden bg-zinc-800 border border-zinc-700">
                           <div
@@ -285,13 +285,13 @@ const AtsAnalyzer = () => {
               {/* Keywords Section */}
               <div className="grid gap-6 md:grid-cols-2">
                 {/* Matched Keywords */}
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-green-500/30 transition-all duration-300">
+                <div className="bg-[#1a1a1a] border border-zinc-800 rounded-xl p-6 hover:border-red-500/30 transition-all duration-300">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-lg bg-green-900/30 text-green-400">
+                    <div className="p-2 rounded-lg bg-red-500/30 text-red-400">
                       <CheckCircle2 size={18} />
                     </div>
                     <h3 className="text-lg font-semibold text-white">Matched Keywords</h3>
-                    <span className="ml-auto px-3 py-1 rounded-full text-xs font-bold bg-green-500 text-black">
+                    <span className="ml-auto px-3 py-1 rounded-full text-xs font-bold bg-red-500 text-white">
                       {result.found_skills?.length || 0}
                     </span>
                   </div>
@@ -300,7 +300,7 @@ const AtsAnalyzer = () => {
                       result.found_skills.map((keyword, idx) => (
                         <span
                           key={idx}
-                          className="rounded-full px-3 py-1 text-xs font-medium bg-green-900/30 text-green-400 border border-green-500/30 hover:bg-green-500/10 transition-colors cursor-default"
+                          className="rounded-full px-3 py-1 text-xs font-medium bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/10 transition-colors cursor-default"
                         >
                           ✓ {keyword}
                         </span>
@@ -312,13 +312,13 @@ const AtsAnalyzer = () => {
                 </div>
 
                 {/* Missing Keywords */}
-                <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-red-500/30 transition-all duration-300">
+                <div className="bg-[#1a1a1a] border border-zinc-800 rounded-xl p-6 hover:border-red-500/30 transition-all duration-300">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-lg bg-red-900/30 text-red-400">
+                    <div className="p-2 rounded-lg bg-red-500/30 text-red-400">
                       <AlertCircle size={18} />
                     </div>
                     <h3 className="text-lg font-semibold text-white">Missing Keywords</h3>
-                    <span className="ml-auto px-3 py-1 rounded-full text-xs font-bold bg-red-500 text-black">
+                    <span className="ml-auto px-3 py-1 rounded-full text-xs font-bold bg-red-500 text-white">
                       {result.missing_skills?.length || 0}
                     </span>
                   </div>
@@ -327,7 +327,7 @@ const AtsAnalyzer = () => {
                       result.missing_skills.map((keyword, idx) => (
                         <span
                           key={idx}
-                          className="rounded-full px-3 py-1 text-xs font-medium bg-red-900/30 text-red-400 border border-red-500/30 hover:bg-red-500/10 transition-colors cursor-default"
+                          className="rounded-full px-3 py-1 text-xs font-medium bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/10 transition-colors cursor-default"
                         >
                           ✗ {keyword}
                         </span>
@@ -340,22 +340,22 @@ const AtsAnalyzer = () => {
               </div>
 
               {/* Recommendations */}
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 hover:border-orange-500/30 transition-all duration-300">
+              <div className="bg-[#1a1a1a] border border-zinc-800 rounded-xl p-6 hover:border-red-500/30 transition-all duration-300">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-white">
-                  <Zap className="text-orange-500" size={20} />
+                  <Zap className="text-red-500" size={20} />
                   Quick Tips to Improve
                 </h3>
                 <ul className="space-y-3 text-sm text-zinc-300">
                   <li className="flex gap-3">
-                    <span className="text-orange-500 font-bold flex-shrink-0">1.</span>
+                    <span className="text-red-500 font-bold flex-shrink-0">1.</span>
                     <span>Add missing keywords naturally throughout your resume, especially in the skills section and job descriptions.</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-orange-500 font-bold flex-shrink-0">2.</span>
+                    <span className="text-red-500 font-bold flex-shrink-0">2.</span>
                     <span>Use standard section headers (Education, Experience, Skills) that ATS systems recognize.</span>
                   </li>
                   <li className="flex gap-3">
-                    <span className="text-orange-500 font-bold flex-shrink-0">3.</span>
+                    <span className="text-red-500 font-bold flex-shrink-0">3.</span>
                     <span>Avoid images, charts, and unusual formatting that may confuse ATS scanners.</span>
                   </li>
                 </ul>
@@ -369,7 +369,7 @@ const AtsAnalyzer = () => {
                   setResume(null)
                   setFileName('')
                 }}
-                className="w-full py-3 rounded-xl border-2 border-orange-500 text-orange-400 font-semibold transition-all duration-300 hover:bg-orange-500/10 hover:shadow-lg hover:shadow-orange-500/20"
+                className="w-full py-3 rounded-xl border-2 border-red-500 text-red-400 font-semibold transition-all duration-300 hover:bg-red-500/10 hover:shadow-lg hover:shadow-red-500/20"
               >
                 Analyze Another Resume
               </button>
@@ -378,34 +378,34 @@ const AtsAnalyzer = () => {
 
           {/* Coming Soon Features */}
           {!result && (
-            <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-8 mt-12 animate-fade-in animation-delay-300">
-              <h2 className="text-2xl font-bold mb-2">Coming Soon</h2>
+            <div className="bg-[#1a1a1a] border border-zinc-800 rounded-2xl p-8 mt-12 animate-fade-in animation-delay-300">
+              <h2 className="text-2xl font-bold mb-2 text-white">Coming Soon</h2>
               <p className="text-zinc-400 mb-8 text-sm leading-relaxed">
                 More AI-powered tools to accelerate your job search and resume optimization:
               </p>
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-orange-500/50 transition-all duration-300 group hover:shadow-lg hover:shadow-orange-500/10">
+                <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-red-500/50 transition-all duration-300 group hover:shadow-lg hover:shadow-red-500/10">
                   <div className="flex items-center gap-2 mb-3">
-                    <FileText className="text-orange-500 group-hover:scale-110 transition-transform" size={20} />
-                    <span className="text-lg font-semibold text-orange-400 group-hover:translate-x-1 transition-transform">Resume Builder</span>
+                    <FileText className="text-red-500 group-hover:scale-110 transition-transform" size={20} />
+                    <span className="text-lg font-semibold text-red-400 group-hover:translate-x-1 transition-transform">Resume Builder</span>
                   </div>
                   <p className="text-zinc-400 text-sm leading-relaxed">
                     Create ATS-optimized resumes with AI assistance, professional templates, and real-time format checking.
                   </p>
                 </div>
-                <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-orange-500/50 transition-all duration-300 group hover:shadow-lg hover:shadow-orange-500/10">
+                <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-red-500/50 transition-all duration-300 group hover:shadow-lg hover:shadow-red-500/10">
                   <div className="flex items-center gap-2 mb-3">
-                    <Search className="text-orange-500 group-hover:scale-110 transition-transform" size={20} />
-                    <span className="text-lg font-semibold text-orange-400 group-hover:translate-x-1 transition-transform">AI Job Finder</span>
+                    <Search className="text-red-500 group-hover:scale-110 transition-transform" size={20} />
+                    <span className="text-lg font-semibold text-red-400 group-hover:translate-x-1 transition-transform">AI Job Finder</span>
                   </div>
                   <p className="text-zinc-400 text-sm leading-relaxed">
                     Automatic job recommendations based on your resume, skills, and experience for perfect matches.
                   </p>
                 </div>
-                <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-orange-500/50 transition-all duration-300 group hover:shadow-lg hover:shadow-orange-500/10">
+                <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-red-500/50 transition-all duration-300 group hover:shadow-lg hover:shadow-red-500/10">
                   <div className="flex items-center gap-2 mb-3">
-                    <PenTool className="text-orange-500 group-hover:scale-110 transition-transform" size={20} />
-                    <span className="text-lg font-semibold text-orange-400 group-hover:translate-x-1 transition-transform">Cover Letter Generator</span>
+                    <PenTool className="text-red-500 group-hover:scale-110 transition-transform" size={20} />
+                    <span className="text-lg font-semibold text-red-400 group-hover:translate-x-1 transition-transform">Cover Letter Generator</span>
                   </div>
                   <p className="text-zinc-400 text-sm leading-relaxed">
                     Generate personalized cover letters with one-click automation for each job application.
@@ -430,6 +430,15 @@ const AtsAnalyzer = () => {
           }
         }
 
+        @keyframes pulseRed {
+          0%, 100% {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+          }
+          50% {
+            box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+          }
+        }
+
         .animate-fade-in {
           animation: fadeIn 0.6s ease-out forwards;
           opacity: 0;
@@ -445,6 +454,10 @@ const AtsAnalyzer = () => {
 
         .animation-delay-300 {
           animation-delay: 0.3s;
+        }
+
+        .animate-pulse-red {
+          animation: pulseRed 2s infinite;
         }
       `}</style>
     </div>

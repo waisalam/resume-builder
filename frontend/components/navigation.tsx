@@ -121,8 +121,8 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                             onClick={() => toggleDropdown(item.id)}
                             aria-expanded={dropdownOpen}
                             aria-haspopup="true"
-                            className={`group relative flex items-center gap-1 px-2 py-1 rounded-md font-medium transition-all duration-200 hover:bg-white/5 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
-                              active ? 'text-orange-500' : 'text-gray-300'
+                            className={`group relative flex items-center gap-1 px-2 py-1 rounded-md font-medium transition-all duration-200 hover:bg-[#ef44441a] hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 ${
+                              active ? 'text-[#ef4444]' : 'text-white'
                             }`}
                           >
                             <span>{item.label}</span>
@@ -135,9 +135,8 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                             </motion.span>
                             {active && (
                               <motion.div
-                                layoutId="active-underline"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500 rounded-full"
-                                style={{ bottom: '-2px' }}
+                                layoutId="active-left-border"
+                                className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-[#ef4444] rounded-full"
                                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                               />
                             )}
@@ -157,8 +156,8 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                                   <li key={child.id} role="menuitem">
                                     <Link
                                       href={child.href ?? '#'}
-                                      className={`block px-4 py-2 text-sm font-medium transition-colors hover:bg-white/5 hover:text-orange-400 ${
-                                        currentPage === child.id ? 'text-orange-500' : 'text-gray-300'
+                                      className={`block px-4 py-2 text-sm font-medium transition-colors hover:bg-[#ef44441a] hover:text-[#ef4444] ${
+                                        currentPage === child.id ? 'text-[#ef4444]' : 'text-white'
                                       }`}
                                       onClick={() => setOpenDropdowns(new Set())}
                                     >
@@ -174,16 +173,15 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                         <Link
                           href={item.href ?? '#'}
                           aria-current={active ? 'page' : undefined}
-                          className={`group relative px-2 py-1 rounded-md font-medium transition-all duration-200 hover:bg-white/5 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
-                            active ? 'text-orange-500' : 'text-gray-300'
+                          className={`group relative px-2 py-1 rounded-md font-medium transition-all duration-200 hover:bg-[#ef44441a] hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 ${
+                            active ? 'text-[#ef4444]' : 'text-white'
                           }`}
                         >
                           {item.label}
                           {active && (
                             <motion.div
-                              layoutId="active-underline"
-                              className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500 rounded-full"
-                              style={{ bottom: '-2px' }}
+                              layoutId="active-left-border"
+                              className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-[#ef4444] rounded-full"
                               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                             />
                           )}
@@ -205,7 +203,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 rounded-md hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+            className="md:hidden p-2 rounded-md hover:bg-[#ef44441a] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             aria-expanded={isMobileOpen}
             aria-controls="mobile-menu"
@@ -247,8 +245,11 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                             onClick={() => toggleDropdown(item.id)}
                             aria-expanded={dropdownOpen}
                             aria-haspopup="true"
-                            className="flex items-center gap-1 w-full text-left font-medium transition-colors py-2 px-2 rounded-md hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
-                            style={{ color: active ? '#ff8c00' : '#cccccc' }}
+                            className={`flex items-center gap-1 w-full text-left font-medium transition-colors py-2 px-2 rounded-md border-l-2 border-transparent hover:bg-[#ef44441a] focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 ${
+                              active
+                                ? 'border-[#ef4444] text-[#ef4444]'
+                                : 'text-white'
+                            }`}
                           >
                             <span>{item.label}</span>
                             <motion.span
@@ -279,8 +280,10 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                                   >
                                     <Link
                                       href={child.href ?? '#'}
-                                      className={`block px-3 py-1.5 rounded-md text-sm transition-colors hover:bg-white/5 ${
-                                        currentPage === child.id ? 'text-orange-500' : 'text-gray-300'
+                                      className={`block px-3 py-1.5 rounded-md text-sm transition-colors border-l-2 border-transparent hover:bg-[#ef44441a] ${
+                                        currentPage === child.id
+                                          ? 'border-[#ef4444] text-[#ef4444]'
+                                          : 'text-white'
                                       }`}
                                       onClick={() => {
                                         setIsMobileOpen(false)
@@ -300,8 +303,11 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
                           href={item.href ?? '#'}
                           onClick={() => setIsMobileOpen(false)}
                           aria-current={active ? 'page' : undefined}
-                          className="block py-2 px-2 rounded-md font-medium transition-colors hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
-                          style={{ color: active ? '#ff8c00' : '#cccccc' }}
+                          className={`block py-2 px-2 rounded-md font-medium transition-colors border-l-2 border-transparent hover:bg-[#ef44441a] focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 ${
+                            active
+                              ? 'border-[#ef4444] text-[#ef4444]'
+                              : 'text-white'
+                          }`}
                         >
                           {item.label}
                         </Link>

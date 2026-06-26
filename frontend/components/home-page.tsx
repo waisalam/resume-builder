@@ -9,10 +9,13 @@ import { useEffect, useRef, useState } from 'react'
 export default function HomePage() {
   const { data: session } = useSession()
   const [headlineIndex, setHeadlineIndex] = useState(0)
+  const [displayHeadline, setDisplayHeadline] = useState('')
+  const [headlineVisible, setHeadlineVisible] = useState(true)
   const [counts, setCounts] = useState({ resumes: 0, improvement: 0, users: 0, interviews: 0 })
   const countersRef = useRef<HTMLDivElement>(null)
   const [countersStarted, setCountersStarted] = useState(false)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
+  const [testimonialVisible, setTestimonialVisible] = useState(true)
 
   const headlines = [
     'Land More Interviews with AI',
@@ -21,13 +24,33 @@ export default function HomePage() {
     'Your Dream Job Starts Here'
   ]
 
+  // Initialize display headline
+  useEffect(() => {
+    setDisplayHeadline(headlines[0])
+  }, [])
+
+  // Headline rotation with fade
   useEffect(() => {
     const interval = setInterval(() => {
-      setHeadlineIndex((prev) => (prev + 1) % headlines.length)
+      setHeadlineVisible(false)
+      setTimeout(() => {
+        setHeadlineIndex((prev) => (prev + 1) % headlines.length)
+      }, 500) // matches transition duration
     }, 4000)
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    if (displayHeadline === headlines[headlineIndex] && headlineVisible) return
+    setDisplayHeadline(headlines[headlineIndex])
+    // trigger fade in after content update
+    const timeout = setTimeout(() => {
+      setHeadlineVisible(true)
+    }, 50)
+    return () => clearTimeout(timeout)
+  }, [headlineIndex])
+
+  // Counters animation observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -77,38 +100,81 @@ export default function HomePage() {
     return () => clearInterval(timer)
   }, [countersStarted])
 
-  // Testimonial autoplay
+  // Testimonial auto-scroll with fade
   useEffect(() => {
     const testimonialTimer = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
+      setTestimonialVisible(false)
+      setTimeout(() => {
+        setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
+      }, 500)
     }, 5000)
     return () => clearInterval(testimonialTimer)
+  }, [])
+
+  useEffect(() => {
+    // when activeTestimonial changes, fade it in
+    const timeout = setTimeout(() => {
+      setTestimonialVisible(true)
+    }, 50)
+    return () => clearTimeout(timeout)
+  }, [activeTestimonial])
+
+  const previousTestimonial = () => {
+    setTestimonialVisible(false)
+    setTimeout(() => {
+      setActiveTestimonial((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
+    }, 500)
+  }
+
+  const nextTestimonial = () => {
+    setTestimonialVisible(false)
+    setTimeout(() => {
+      setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
+    }, 500)
+  }
+
+  // Scroll-triggered animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    )
+
+    const elements = document.querySelectorAll('[data-animate]')
+    elements.forEach((el) => observer.observe(el))
+
+    return () => {
+      elements.forEach((el) => observer.unobserve(el))
+    }
   }, [])
 
   const features = [
     {
       icon: Brain,
       title: 'AI Analysis',
-      description: 'Advanced machine learning analyzes your resume against job descriptions with 98% accuracy',
-      color: 'from-orange-500 to-amber-500'
+      description: 'Advanced machine learning analyzes your resume against job descriptions with 98% accuracy'
     },
     {
       icon: Zap,
       title: 'Smart Suggestions',
-      description: 'Get intelligent recommendations to optimize keywords, skills, and experience for each role',
-      color: 'from-blue-500 to-cyan-500'
+      description: 'Get intelligent recommendations to optimize keywords, skills, and experience for each role'
     },
     {
       icon: FileText,
       title: 'Live Preview',
-      description: 'See real-time changes and ATS score updates as you refine your resume content',
-      color: 'from-green-500 to-emerald-500'
+      description: 'See real-time changes and ATS score updates as you refine your resume content'
     },
     {
       icon: BarChart3,
       title: 'ATS Optimization',
-      description: 'Beat applicant tracking systems with tailored formatting and keyword strategies',
-      color: 'from-purple-500 to-pink-500'
+      description: 'Beat applicant tracking systems with tailored formatting and keyword strategies'
     }
   ]
 
@@ -133,54 +199,41 @@ export default function HomePage() {
     }
   ]
 
-  const previousTestimonial = () => {
-    setActiveTestimonial((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))
-  }
-
-  const nextTestimonial = () => {
-    setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
-  }
-
   return (
     <div className="relative left-1/2 -translate-x-1/2 w-screen min-h-screen bg-black text-white overflow-x-hidden">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black pt-20">
-        {/* Background effects */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500 rounded-full mix-blend-screen filter blur-[128px] animate-pulse" style={{ animationDuration: '8s' }} />
-          <div className="absolute top-1/3 right-1/3 w-80 h-80 bg-amber-500 rounded-full mix-blend-screen filter blur-[128px] animate-pulse" style={{ animationDuration: '10s' }} />
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-600 rounded-full mix-blend-screen filter blur-[128px] animate-pulse" style={{ animationDuration: '12s' }} />
-        </div>
-
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
-
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black pt-20">
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 text-center">
           {/* Badge */}
-          <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm border border-orange-500/20 animate-fade-in-down">
-            <Sparkles className="w-4 h-4 text-orange-500" />
-            <span className="text-sm font-medium bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent uppercase tracking-widest">
+          <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 backdrop-blur-sm border border-red-500/20 opacity-0"
+               data-animate="true"
+               style={{ animationDelay: '0ms' }}>
+            <Sparkles className="w-4 h-4 text-red-500" />
+            <span className="text-sm font-medium text-red-500 uppercase tracking-widest">
               AI-Powered Resume Optimization
             </span>
           </div>
 
-          {/* Headline */}
+          {/* Headline with fade */}
           <div className="h-24 sm:h-28 lg:h-32 mb-6">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight transition-all duration-500 animate-fade-in">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-orange-400">
-                {headlines[headlineIndex]}
-              </span>
+            <h1 className={`text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight text-white transition-opacity duration-500 ${headlineVisible ? 'opacity-100' : 'opacity-0'}`}>
+              {displayHeadline}
             </h1>
           </div>
 
           {/* Subheading */}
-          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in animation-delay-200">
+          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed opacity-0"
+             data-animate="true"
+             style={{ animationDelay: '200ms' }}>
             Get past ATS filters and land more interviews. Our AI analyzes your resume against job descriptions with 98% accuracy powered by 6000+ real resume data.
           </p>
 
           {/* CTA */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in animation-delay-300">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0"
+               data-animate="true"
+               style={{ animationDelay: '300ms' }}>
             <button
               onClick={(e) => {
                 if (!session) {
@@ -190,17 +243,14 @@ export default function HomePage() {
                   window.location.href = '/analyzer'
                 }
               }}
-              className="relative group px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-bold text-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 inline-flex items-center gap-2"
+              className="relative group px-8 py-4 bg-red-500 hover:bg-red-600 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 inline-flex items-center gap-2"
             >
-              <span className="relative z-10 flex items-center gap-2">
-                Analyze Resume
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              Analyze Resume
+              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <a
               href="/live-preview"
-              className="px-8 py-4 border border-orange-500/50 text-orange-400 font-bold text-lg rounded-xl backdrop-blur-sm bg-white/5 hover:bg-white/10 hover:border-orange-500 transition-all duration-300 inline-flex items-center gap-2 group hover:shadow-lg hover:shadow-orange-500/20"
+              className="px-8 py-4 bg-red-500 hover:bg-red-600 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 inline-flex items-center gap-2 group"
             >
               Build Resume
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -208,7 +258,9 @@ export default function HomePage() {
           </div>
 
           {/* Trust indicators */}
-          <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-500 animate-fade-in animation-delay-1000">
+          <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-500 opacity-0"
+               data-animate="true"
+               style={{ animationDelay: '1000ms' }}>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               No credit card required
@@ -228,15 +280,15 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="relative py-24 bg-gradient-to-b from-black via-gray-900/30 to-black">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent" />
-        
+      <section className="relative py-24 bg-black">
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 animate-fade-in">
+          <div className="text-center mb-16 opacity-0"
+               data-animate="true"
+               style={{ animationDelay: '0ms' }}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               Everything You Need
             </h2>
-            <p className="text-lg text-gray-400 animate-fade-in animation-delay-100">
+            <p className="text-lg text-gray-400">
               Powerful features to supercharge your job search
             </p>
           </div>
@@ -245,14 +297,13 @@ export default function HomePage() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-orange-500/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/5 animate-fade-in"
+                className="group relative p-6 rounded-2xl bg-[#1a1a1a] border border-[#2a2a2a] transition-all duration-500 hover:-translate-y-1 hover:shadow-xl opacity-0"
+                data-animate="true"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                
                 <div className="relative z-10 flex flex-col h-full">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} p-2.5 mb-5 group-hover:scale-110 transition-transform duration-300`}>
-                    <feature.icon className="w-full h-full text-white" />
+                  <div className="w-12 h-12 rounded-xl bg-red-500/10 p-2.5 mb-5 group-hover:scale-110 transition-transform duration-300">
+                    <feature.icon className="w-full h-full text-red-500" />
                   </div>
                   
                   <h3 className="text-lg font-semibold text-white mb-3">{feature.title}</h3>
@@ -265,69 +316,79 @@ export default function HomePage() {
       </section>
 
       {/* Statistics Section */}
-      <section ref={countersRef} className="relative py-24 bg-gradient-to-b from-black to-gray-900/50 border-y border-gray-800/50">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent" />
-        
+      <section ref={countersRef} className="relative py-24 bg-black border-y border-gray-800/50">
         <div className="relative z-10 w-full max-w-5xl mx-auto px-6 sm:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center group">
-              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+            <div className="text-center group opacity-0"
+                 data-animate="true"
+                 style={{ animationDelay: '0ms' }}>
+              <div className="text-4xl sm:text-5xl font-black text-red-500 mb-2 group-hover:scale-110 transition-transform duration-300">
                 {counts.resumes.toLocaleString()}+
               </div>
-              <div className="text-sm font-medium text-gray-400">Resumes Analyzed</div>
-              <div className="text-xs text-gray-600 mt-1">And counting</div>
+              <div className="text-sm font-medium text-white">Resumes Analyzed</div>
+              <div className="text-xs text-gray-400 mt-1">And counting</div>
             </div>
-            <div className="text-center group">
-              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+            <div className="text-center group opacity-0"
+                 data-animate="true"
+                 style={{ animationDelay: '100ms' }}>
+              <div className="text-4xl sm:text-5xl font-black text-red-500 mb-2 group-hover:scale-110 transition-transform duration-300">
                 {counts.improvement}%
               </div>
-              <div className="text-sm font-medium text-gray-400">ATS Score Improvement</div>
-              <div className="text-xs text-gray-600 mt-1">Average increase</div>
+              <div className="text-sm font-medium text-white">ATS Score Improvement</div>
+              <div className="text-xs text-gray-400 mt-1">Average increase</div>
             </div>
-            <div className="text-center group">
-              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+            <div className="text-center group opacity-0"
+                 data-animate="true"
+                 style={{ animationDelay: '200ms' }}>
+              <div className="text-4xl sm:text-5xl font-black text-red-500 mb-2 group-hover:scale-110 transition-transform duration-300">
                 {counts.users.toLocaleString()}+
               </div>
-              <div className="text-sm font-medium text-gray-400">Active Users</div>
-              <div className="text-xs text-gray-600 mt-1">Growing daily</div>
+              <div className="text-sm font-medium text-white">Active Users</div>
+              <div className="text-xs text-gray-400 mt-1">Growing daily</div>
             </div>
-            <div className="text-center group">
-              <div className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+            <div className="text-center group opacity-0"
+                 data-animate="true"
+                 style={{ animationDelay: '300ms' }}>
+              <div className="text-4xl sm:text-5xl font-black text-red-500 mb-2 group-hover:scale-110 transition-transform duration-300">
                 {counts.interviews.toLocaleString()}+
               </div>
-              <div className="text-sm font-medium text-gray-400">Interviews Landed</div>
-              <div className="text-xs text-gray-600 mt-1">Success stories</div>
+              <div className="text-sm font-medium text-white">Interviews Landed</div>
+              <div className="text-xs text-gray-400 mt-1">Success stories</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Testimonials Carousel */}
-      <section className="relative py-24 bg-gradient-to-b from-gray-900/50 to-black">
+      <section className="relative py-24 bg-black">
         <div className="w-full max-w-4xl mx-auto px-6 sm:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 animate-fade-in">
+          <div className="text-center mb-16 opacity-0"
+               data-animate="true"
+               style={{ animationDelay: '0ms' }}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               What Our Users Say
             </h2>
-            <p className="text-lg text-gray-400 animate-fade-in animation-delay-100">
+            <p className="text-lg text-gray-400">
               Join thousands of satisfied job seekers
             </p>
           </div>
 
-          <div className="relative animate-fade-in animation-delay-200">
-            <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 sm:p-10 transition-all duration-500">
-              <Quote className="w-10 h-10 text-orange-500/30 mb-6" />
+          <div className="relative opacity-0"
+               data-animate="true"
+               style={{ animationDelay: '200ms' }}>
+            <div className={`relative bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-8 sm:p-10 transition-opacity duration-500 ${testimonialVisible ? 'opacity-100' : 'opacity-0'}`}>
+              <Quote className="w-10 h-10 text-red-500/30 mb-6" />
               <blockquote className="text-xl sm:text-2xl text-gray-200 mb-8 leading-relaxed font-light italic">
                 "{testimonials[activeTestimonial].quote}"
               </blockquote>
               
               <div className="flex items-center gap-1 mb-6">
                 {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-orange-500 text-orange-500" />
+                  <Star key={i} className="w-5 h-5 fill-red-500 text-red-500" />
                 ))}
               </div>
 
-              <div className="border-t border-white/10 pt-6 flex items-center justify-between">
+              <div className="border-t border-gray-800 pt-6 flex items-center justify-between">
                 <div>
                   <div className="font-semibold text-white">{testimonials[activeTestimonial].author}</div>
                   <div className="text-gray-400 text-sm">{testimonials[activeTestimonial].role}</div>
@@ -335,14 +396,14 @@ export default function HomePage() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={previousTestimonial}
-                    className="p-2 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-orange-500/50 transition-all"
+                    className="p-2 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-gray-400 hover:text-white hover:border-red-500/50 transition-all"
                     aria-label="Previous testimonial"
                   >
                     <ChevronLeft size={20} />
                   </button>
                   <button
                     onClick={nextTestimonial}
-                    className="p-2 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-orange-500/50 transition-all"
+                    className="p-2 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-gray-400 hover:text-white hover:border-red-500/50 transition-all"
                     aria-label="Next testimonial"
                   >
                     <ChevronRight size={20} />
@@ -356,9 +417,14 @@ export default function HomePage() {
               {testimonials.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => setActiveTestimonial(index)}
+                  onClick={() => {
+                    setTestimonialVisible(false)
+                    setTimeout(() => {
+                      setActiveTestimonial(index)
+                    }, 500)
+                  }}
                   className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    index === activeTestimonial ? 'bg-orange-500 w-8' : 'bg-gray-600 hover:bg-gray-400'
+                    index === activeTestimonial ? 'bg-red-500 w-8' : 'bg-gray-600 hover:bg-gray-400'
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -371,11 +437,13 @@ export default function HomePage() {
       {/* How It Works Section */}
       <section className="py-24 bg-black">
         <div className="w-full max-w-7xl mx-auto px-6 sm:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 animate-fade-in">
+          <div className="text-center mb-16 opacity-0"
+               data-animate="true"
+               style={{ animationDelay: '0ms' }}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               How It Works
             </h2>
-            <p className="text-lg text-gray-400 animate-fade-in animation-delay-100">
+            <p className="text-lg text-gray-400">
               Three simple steps to optimize your resume
             </p>
           </div>
@@ -403,12 +471,13 @@ export default function HomePage() {
             ].map((item, index) => (
               <div
                 key={index}
-                className="group relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl animate-fade-in"
+                className="group relative p-8 rounded-2xl bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#2a2a2a] transition-all duration-500 hover:-translate-y-1 hover:shadow-xl opacity-0"
+                data-animate="true"
                 style={{ animationDelay: `${index * 200}ms` }}
               >
-                <div className="text-6xl font-black text-orange-500/10 mb-4 select-none">{item.step}</div>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                  <item.icon className="w-6 h-6 text-orange-500" />
+                <div className="text-6xl font-black text-red-500/10 mb-4 select-none">{item.step}</div>
+                <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                  <item.icon className="w-6 h-6 text-red-500" />
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-3">{item.title}</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">{item.description}</p>
@@ -419,17 +488,21 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="relative py-24 bg-gradient-to-b from-black via-gray-900/20 to-black border-t border-gray-800/50">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent" />
-        
+      <section className="relative py-24 bg-black border-t border-gray-800/50">
         <div className="relative z-10 w-full max-w-4xl mx-auto px-6 sm:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6 animate-fade-in">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6 opacity-0"
+              data-animate="true"
+              style={{ animationDelay: '0ms' }}>
             Ready to Transform Your Job Search?
           </h2>
-          <p className="text-lg text-gray-400 mb-10 animate-fade-in animation-delay-100">
+          <p className="text-lg text-gray-400 mb-10 opacity-0"
+             data-animate="true"
+             style={{ animationDelay: '100ms' }}>
             Join thousands of professionals who have improved their ATS scores and landed their dream jobs.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animation-delay-200">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0"
+               data-animate="true"
+               style={{ animationDelay: '200ms' }}>
             <button
               onClick={(e) => {
                 if (!session) {
@@ -439,16 +512,14 @@ export default function HomePage() {
                   window.location.href = '/analyzer'
                 }
               }}
-              className="relative group px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-bold text-lg rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/50 hover:scale-105 inline-flex items-center gap-2"
+              className="relative group px-8 py-4 bg-red-500 hover:bg-red-600 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 inline-flex items-center gap-2"
             >
-              <span className="relative z-10 flex items-center gap-2">
-                Start Free Analysis
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </span>
+              Start Free Analysis
+              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <a
               href="/live-preview"
-              className="px-8 py-4 border border-orange-500/50 text-orange-400 font-bold text-lg rounded-xl backdrop-blur-sm bg-white/5 hover:bg-white/10 hover:border-orange-500 transition-all duration-300 inline-flex items-center gap-2 group hover:shadow-lg hover:shadow-orange-500/20"
+              className="px-8 py-4 bg-red-500 hover:bg-red-600 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 inline-flex items-center gap-2 group"
             >
               Build Resume
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -468,17 +539,17 @@ export default function HomePage() {
             <div>
               <h4 className="font-semibold text-white mb-4">Product</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="/analyzer" className="hover:text-orange-400 transition-colors">Analyze Resume</a></li>
-                <li><a href="/live-preview" className="hover:text-orange-400 transition-colors">Build Resume</a></li>
-                <li><a href="#" className="hover:text-orange-400 transition-colors">Pricing</a></li>
+                <li><a href="/analyzer" className="hover:text-red-400 transition-colors">Analyze Resume</a></li>
+                <li><a href="/live-preview" className="hover:text-red-400 transition-colors">Build Resume</a></li>
+                <li><a href="#" className="hover:text-red-400 transition-colors">Pricing</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold text-white mb-4">Company</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-orange-400 transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-orange-400 transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-orange-400 transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-red-400 transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-red-400 transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-red-400 transition-colors">Contact</a></li>
               </ul>
             </div>
           </div>
@@ -500,45 +571,8 @@ export default function HomePage() {
           }
         }
 
-        @keyframes fadeInDown {
-          from {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fade-in {
+        .in-view {
           animation: fadeIn 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-fade-in-down {
-          animation: fadeInDown 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animation-delay-100 {
-          animation-delay: 0.1s;
-        }
-
-        .animation-delay-200 {
-          animation-delay: 0.2s;
-        }
-
-        .animation-delay-300 {
-          animation-delay: 0.3s;
-        }
-
-        .animation-delay-1000 {
-          animation-delay: 1s;
-        }
-
-        .animation-delay-2000 {
-          animation-delay: 2s;
         }
 
         ::-webkit-scrollbar {
@@ -550,12 +584,12 @@ export default function HomePage() {
         }
 
         ::-webkit-scrollbar-thumb {
-          background: rgba(249, 115, 22, 0.6);
+          background: rgba(239, 68, 68, 0.6);
           border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-          background: rgba(249, 115, 22, 0.8);
+          background: rgba(239, 68, 68, 0.8);
         }
       `}</style>
     </div>

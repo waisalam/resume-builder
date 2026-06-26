@@ -280,6 +280,9 @@ export default function ResumeEnhancePage() {
 
   // ── UI ────────────────────────────────────────────────────────────────────
 
+  const doneCount = Object.values(sectionStatuses).filter(s => s === "done").length;
+  const progressPercent = (doneCount / SECTION_ORDER.length) * 100;
+
   return (
     <div style={S.page}>
       <style>{`
@@ -288,15 +291,16 @@ export default function ResumeEnhancePage() {
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes pulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
         .spin{display:inline-block;animation:spin 1s linear infinite}
-        input,textarea{font-family:inherit;transition:border-color .15s}
-        input:focus,textarea:focus{outline:none;border-color:#FF7A00 !important;box-shadow:0 0 0 2px rgba(255,122,0,0.12)}
+        input,textarea{font-family:inherit;transition:border-color .15s,box-shadow .15s}
+        input:focus,textarea:focus{outline:none;border-color:#ef4444 !important;box-shadow:0 0 0 2px rgba(239,68,68,0.12)}
         ::-webkit-scrollbar{width:3px}
         ::-webkit-scrollbar-track{background:transparent}
         ::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
-        .btn-primary:hover{background:#ff8c33 !important;}
+        .btn-primary:hover{background:#dc2626 !important;transform:scale(1.03);}
         .btn-ghost:hover{background:rgba(255,255,255,0.04) !important;}
         .card-hover:hover{border-color:#333 !important;box-shadow:0 4px 12px rgba(0,0,0,0.4) !important;}
         .input-hover:hover{border-color:#333 !important;}
+        .btn-primary{transition:background .15s, transform .15s;}
       `}</style>
 
       <div style={S.grid}>
@@ -372,24 +376,10 @@ export default function ResumeEnhancePage() {
             {/* AI progress */}
             <Section title="AI progress">
               <div style={S.progressPanel}>
-                {SECTION_ORDER.map(sKey => (
-                  <div key={sKey} style={{
-                    ...S.sectionRow,
-                    background: currentSection === sKey ? "#1a1a1a" : "transparent",
-                    borderLeft: currentSection === sKey ? "2px solid #FF7A00" : "2px solid transparent",
-                    transition: "all .2s ease",
-                  }}>
-                    <SectionIcon sKey={sKey} />
-                    <span style={{
-                      ...S.sectionLabel,
-                      color: sectionStatuses[sKey] === "done" ? "#e0e0e0" : sectionStatuses[sKey] === "streaming" ? "#fff" : "#666"
-                    }}>
-                      {SECTION_LABELS[sKey]}
-                    </span>
-                    {sectionStatuses[sKey] === "streaming" && <span style={S.streamTag}>enhancing…</span>}
-                    {sectionStatuses[sKey] === "done" && <span style={S.doneTagSmall}>done</span>}
-                  </div>
-                ))}
+                <div style={S.progressBarContainer}>
+                  <div style={{...S.progressBarFill, width: `${progressPercent}%`}} />
+                </div>
+                {status === "streaming" && <div style={S.progressHint}>Enhancing sections...</div>}
               </div>
             </Section>
 
@@ -498,11 +488,17 @@ export default function ResumeEnhancePage() {
 
 function Section({ title, children, onAdd }: { title: string; children: React.ReactNode; onAdd?: () => void }) {
   return (
-    <div style={{ padding: "12px 14px 4px" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-        <span style={{ fontSize: 10, fontWeight: 600, color: "#FF7A00", textTransform: "uppercase", letterSpacing: "0.08em" }}>{title}</span>
+    <div style={{
+      margin: "0 8px 10px 8px",
+      padding: "14px 14px 12px",
+      background: "#1a1a1a",
+      border: "1px solid #2a2a2a",
+      borderRadius: 10,
+    }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+        <span style={{ fontSize: 10, fontWeight: 600, color: "#ef4444", textTransform: "uppercase", letterSpacing: "0.08em" }}>{title}</span>
         {onAdd && (
-          <button onClick={onAdd} style={{ fontSize: 11, color: "#FF7A00", background: "none", border: "0.5px solid rgba(255,122,0,0.3)", borderRadius: 4, padding: "2px 8px", cursor: "pointer", transition: "background .15s" }}
+          <button onClick={onAdd} style={{ fontSize: 11, color: "#ef4444", background: "none", border: "0.5px solid rgba(239,68,68,0.3)", borderRadius: 4, padding: "2px 8px", cursor: "pointer", transition: "background .15s" }}
             className="btn-ghost">+ Add</button>
         )}
       </div>
@@ -513,7 +509,7 @@ function Section({ title, children, onAdd }: { title: string; children: React.Re
 
 function GroupCard({ children, onRemove }: { children: React.ReactNode; onRemove: () => void }) {
   return (
-    <div style={{ background: "#0f0f0f", border: "0.5px solid #222", borderRadius: 8, padding: "10px 12px", marginBottom: 8, transition: "border-color .2s ease" }} className="card-hover">
+    <div style={{ background: "#1a1a1a", border: "0.5px solid #2a2a2a", borderRadius: 8, padding: "10px 12px", marginBottom: 8, transition: "border-color .2s ease" }} className="card-hover">
       {children}
       <button onClick={onRemove} style={{ fontSize: 11, color: "#666", background: "none", border: "none", cursor: "pointer", padding: 0, marginTop: 2, transition: "color .15s" }}
         onMouseEnter={e => e.currentTarget.style.color = "#aaa"}
@@ -525,7 +521,7 @@ function GroupCard({ children, onRemove }: { children: React.ReactNode; onRemove
 function Input({ placeholder, value, onChange }: { placeholder: string; value: string; onChange: (v: string) => void }) {
   return (
     <input placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)}
-      style={{ width: "100%", background: "#0a0a0a", color: "#e8e8e8", border: "0.5px solid #2a2a2a", borderRadius: 6, padding: "8px 10px", fontSize: 13, marginBottom: 8, display: "block", transition: "border-color .15s" }}
+      style={{ width: "100%", background: "#1a1a1a", color: "#fff", border: "0.5px solid #2a2a2a", borderRadius: 6, padding: "8px 10px", fontSize: 13, marginBottom: 8, display: "block", transition: "border-color .15s" }}
       className="input-hover" />
   );
 }
@@ -533,7 +529,7 @@ function Input({ placeholder, value, onChange }: { placeholder: string; value: s
 function Textarea({ placeholder, value, onChange, rows }: { placeholder: string; value: string; onChange: (v: string) => void; rows?: number }) {
   return (
     <textarea placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)} rows={rows ?? 3}
-      style={{ width: "100%", background: "#0a0a0a", color: "#e8e8e8", border: "0.5px solid #2a2a2a", borderRadius: 6, padding: "8px 10px", fontSize: 13, marginBottom: 8, display: "block", resize: "vertical" as const, lineHeight: 1.5, fontFamily: "inherit", transition: "border-color .15s" }}
+      style={{ width: "100%", background: "#1a1a1a", color: "#fff", border: "0.5px solid #2a2a2a", borderRadius: 6, padding: "8px 10px", fontSize: 13, marginBottom: 8, display: "block", resize: "vertical" as const, lineHeight: 1.5, fontFamily: "inherit", transition: "border-color .15s" }}
       className="input-hover"
     />
   );
@@ -542,9 +538,9 @@ function Textarea({ placeholder, value, onChange, rows }: { placeholder: string;
 function ResumeSection({ title, children, isStreaming }: { title: string; children: React.ReactNode; isStreaming: boolean }) {
   return (
     <div style={{ marginBottom: 18 }}>
-      <div style={{ fontSize: 10, fontWeight: 600, color: isStreaming ? "#FF7A00" : "#444", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8, paddingBottom: 5, borderBottom: "0.5px solid #222", display: "flex", alignItems: "center", gap: 6 }}>
+      <div style={{ fontSize: 10, fontWeight: 600, color: isStreaming ? "#ef4444" : "#444", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8, paddingBottom: 5, borderBottom: "0.5px solid #222", display: "flex", alignItems: "center", gap: 6 }}>
         {title}
-        {isStreaming && <span style={{ fontSize: 9, color: "#FF7A00", fontWeight: 400, animation: "pulse 1.2s ease-in-out infinite", display: "inline-block" }}>● live</span>}
+        {isStreaming && <span style={{ fontSize: 9, color: "#ef4444", fontWeight: 400, animation: "pulse 1.2s ease-in-out infinite", display: "inline-block" }}>● live</span>}
       </div>
       {children}
     </div>
@@ -574,20 +570,20 @@ const S: Record<string, React.CSSProperties> = {
     borderRadius: 14,
     overflow: "hidden",
     boxShadow: "0 0 40px rgba(0,0,0,0.5)",
-    background: "#0d0d0d",
+    background: "#0a0a0a",
   },
   left: {
     borderRight: "0.5px solid #1e1e1e",
     display: "flex",
     flexDirection: "column",
-    background: "#111",
+    background: "#0a0a0a",
     height: "100%",
     overflow: "hidden",
   },
   right: {
     display: "flex",
     flexDirection: "column",
-    background: "#0c0c0c",
+    background: "#0a0a0a",
     height: "100%",
     overflow: "hidden",
   },
@@ -614,16 +610,16 @@ const S: Record<string, React.CSSProperties> = {
     fontSize: 10,
     padding: "2px 8px",
     borderRadius: 20,
-    background: "rgba(255,122,0,0.1)",
-    color: "#FF7A00",
-    border: "0.5px solid rgba(255,122,0,0.3)",
+    background: "rgba(239,68,68,0.1)",
+    color: "#ef4444",
+    border: "0.5px solid rgba(239,68,68,0.3)",
     fontWeight: 400,
   },
   badgeDot: {
     width: 5,
     height: 5,
     borderRadius: "50%",
-    background: "#FF7A00",
+    background: "#ef4444",
     display: "inline-block",
     animation: "pulse 1.2s ease-in-out infinite",
   },
@@ -631,20 +627,20 @@ const S: Record<string, React.CSSProperties> = {
     fontSize: 10,
     padding: "2px 8px",
     borderRadius: 20,
-    background: "rgba(255,122,0,0.1)",
-    color: "#FF7A00",
-    border: "0.5px solid rgba(255,122,0,0.3)",
+    background: "rgba(239,68,68,0.1)",
+    color: "#ef4444",
+    border: "0.5px solid rgba(239,68,68,0.3)",
   },
   scrollArea: {
     flex: 1,
     overflowY: "auto" as const,
     minHeight: 0,
-    padding: "0 0 10px 0",
+    padding: "8px 0 10px 0",
   },
   bottomBar: {
     padding: "12px 14px 14px",
     borderTop: "0.5px solid #1e1e1e",
-    background: "#111",
+    background: "#0a0a0a",
   },
   primaryBtn: {
     width: "100%",
@@ -654,13 +650,13 @@ const S: Record<string, React.CSSProperties> = {
     border: "none",
     borderRadius: 8,
     cursor: "pointer",
-    background: "#FF7A00",
-    color: "#000",
+    background: "#ef4444",
+    color: "#fff",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
-    transition: "background .15s",
+    transition: "background .15s, transform .15s",
   },
   ghostBtn: {
     width: "100%",
@@ -675,61 +671,28 @@ const S: Record<string, React.CSSProperties> = {
   },
   progressPanel: {
     borderRadius: 8,
+    padding: "8px 0",
+  },
+  progressBarContainer: {
+    height: 3,
+    backgroundColor: "#2a2a2a",
+    borderRadius: 2,
     overflow: "hidden",
-    border: "0.5px solid #222",
-    background: "#0d0d0d",
+    marginBottom: 6,
   },
-  sectionRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    padding: "7px 12px",
-    transition: "background .15s",
-    borderBottom: "0.5px solid #1a1a1a",
-    fontSize: 12,
+  progressBarFill: {
+    height: "100%",
+    backgroundColor: "#ef4444",
+    transition: "width 0.4s ease",
+    borderRadius: 2,
   },
-  sectionLabel: {
-    flex: 1,
-    fontSize: 11,
-    fontWeight: 400,
-  },
-  sectionIconDone: {
-    color: "#FF7A00",
+  progressHint: {
     fontSize: 10,
-    fontWeight: 600,
-  },
-  sectionIconError: {
-    color: "#ff4444",
-    fontSize: 10,
-    fontWeight: 600,
-  },
-  sectionIconIdle: {
-    width: 8,
-    height: 8,
-    borderRadius: "50%",
-    background: "#333",
-    display: "inline-block",
-  },
-  spinner: {
-    width: 10,
-    height: 10,
-    border: "1.5px solid #FF7A00",
-    borderTopColor: "transparent",
-    borderRadius: "50%",
-    display: "inline-block",
-    animation: "spin 0.6s linear infinite",
-  },
-  streamTag: {
-    fontSize: 9,
-    color: "#FF7A00",
-    fontStyle: "italic",
-  },
-  doneTagSmall: {
-    fontSize: 9,
-    color: "#666",
+    color: "#888",
+    textAlign: "center" as const,
   },
   editBox: {
-    background: "#0f0f0f",
+    background: "#1a1a1a",
     borderRadius: 8,
     padding: 12,
     border: "0.5px solid #2a2a2a",
@@ -747,7 +710,7 @@ const S: Record<string, React.CSSProperties> = {
     minHeight: 0,
   },
   resumeCard: {
-    background: "#161616",
+    background: "#1a1a1a",
     borderRadius: 12,
     border: "0.5px solid #2a2a2a",
     padding: "24px 28px",
@@ -769,7 +732,7 @@ const S: Record<string, React.CSSProperties> = {
   },
   resumeRole: {
     fontSize: 13,
-    color: "#FF7A00",
+    color: "#ef4444",
     fontWeight: 500,
     marginBottom: 8,
   },
@@ -801,9 +764,9 @@ const S: Record<string, React.CSSProperties> = {
     fontSize: 11,
     padding: "3px 10px",
     borderRadius: 20,
-    background: "rgba(255,122,0,0.08)",
-    color: "#ffb366",
-    border: "0.5px solid rgba(255,122,0,0.2)",
+    background: "rgba(239,68,68,0.08)",
+    color: "#fca5a5",
+    border: "0.5px solid rgba(239,68,68,0.2)",
     transition: "background .15s, border-color .15s",
   },
   expItem: {
@@ -816,7 +779,7 @@ const S: Record<string, React.CSSProperties> = {
     marginBottom: 2,
   },
   expDot: {
-    color: "#FF7A00",
+    color: "#ef4444",
     margin: "0 4px",
   },
   expMeta: {
@@ -851,7 +814,7 @@ const S: Record<string, React.CSSProperties> = {
     display: "inline-block",
     width: 2,
     height: 12,
-    background: "#FF7A00",
+    background: "#ef4444",
     borderRadius: 1,
     verticalAlign: "text-bottom",
     marginLeft: 1,

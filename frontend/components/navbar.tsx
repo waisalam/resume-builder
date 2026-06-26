@@ -15,10 +15,7 @@ export default function Navbar() {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark')
 
   useEffect(() => {
-    // Logo entrance animation on mount
     setLogoVisible(true)
-    
-    // Scroll detection for shadow
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
     }
@@ -27,7 +24,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Theme initialization and persistence
   useEffect(() => {
     const storedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -48,7 +44,7 @@ export default function Navbar() {
     setMobileMenuOpen(false)
   }, [pathname])
 
-  // Close drawer on resize to desktop
+  // Close menu on resize to desktop
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -59,40 +55,48 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const navItemClass = 
-    "block py-2 px-3 rounded-md text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+  // Base nav link style for mobile
+  const mobileLinkBase = 
+    "block py-2 px-3 rounded-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+
+  // Determine active link styling
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/'
+    if (href === '/analyzer') return pathname.startsWith('/analyzer')
+    return false
+  }
 
   return (
     <>
       <nav
         className={`sticky top-0 z-50 backdrop-blur-md transition-shadow duration-300 ${
           isScrolled ? 'shadow-lg dark:shadow-black/30' : 'shadow-none'
-        } bg-white/90 dark:bg-black/80 border-b border-gray-200 dark:border-gray-800`}
+        } bg-white/90 dark:bg-black border-b border-gray-200 dark:border-red-500/20`}
         role="navigation"
         aria-label="Main navigation"
       >
         <div className="w-full px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-          {/* Logo with smooth entrance animation */}
+          {/* Logo */}
           <Link
             href="/"
             className={`flex items-center gap-2 group transition-all duration-500 ease-out ${
               logoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
             }`}
           >
-            <div className="p-2 rounded-lg bg-orange-500/10 group-hover:bg-orange-500/20 dark:bg-orange-500/10 dark:group-hover:bg-orange-500/20 transition-all duration-300">
-              <Zap size={20} className="text-orange-500" />
+            <div className="p-2 rounded-lg bg-orange-500/10 group-hover:bg-orange-500/20 dark:bg-red-500/10 dark:group-hover:bg-red-500/20 transition-all duration-300">
+              <Zap size={20} className="text-orange-500 dark:text-red-500" />
             </div>
-            <span className="hidden sm:inline text-xl font-bold text-orange-500 hover:text-orange-600 dark:text-orange-500 dark:hover:text-orange-400 transition-colors duration-200">
+            <span className="hidden sm:inline text-xl font-bold text-orange-500 dark:text-white hover:text-orange-600 dark:hover:text-red-500 transition-colors duration-200">
               ATS Analyzer
             </span>
           </Link>
 
           {/* Right section: Theme toggle, Auth, Hamburger */}
           <div className="flex items-center gap-3">
-            {/* Theme toggle with rotating sun/moon */} 
+            {/* Theme toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+              className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:focus-visible:ring-red-500"
               aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
             >
               <div className="relative w-5 h-5">
@@ -111,16 +115,16 @@ export default function Navbar() {
               </div>
             </button>
 
-            {/* Desktop auth buttons */}
+            {/* Desktop auth & CTA */}
             <div className="hidden md:flex items-center gap-3">
               {session ? (
                 <>
-                  <span className="text-sm text-gray-600 dark:text-gray-400 pr-3 border-r border-gray-300 dark:border-gray-700">
+                  <span className="text-sm text-gray-600 dark:text-white pr-3 border-r border-gray-300 dark:border-gray-700">
                     {session.user?.name}
                   </span>
                   <button
                     onClick={() => signOut()}
-                    className="px-3 py-1.5 rounded text-sm font-semibold bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 hover:underline decoration-orange-500 underline-offset-4 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="px-3 py-1.5 rounded text-sm font-semibold bg-gray-100 dark:bg-transparent dark:border dark:border-gray-600 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-red-500/10 dark:hover:text-red-500 dark:hover:border-red-500 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:focus-visible:ring-red-500"
                   >
                     Sign out
                   </button>
@@ -129,7 +133,7 @@ export default function Navbar() {
                 <>
                   <button
                     onClick={() => signIn("google")}
-                    className="px-3 py-1.5 rounded text-sm font-semibold border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-orange-500 dark:hover:border-orange-500 hover:text-gray-900 dark:hover:text-white hover:underline decoration-orange-500 underline-offset-4 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="px-3 py-1.5 rounded text-sm font-semibold border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white hover:border-orange-500 dark:hover:border-red-500 dark:hover:text-red-500 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:focus-visible:ring-red-500"
                   >
                     Sign in
                   </button>
@@ -141,7 +145,11 @@ export default function Navbar() {
                         signIn("google")
                       }
                     }}
-                    className="inline-flex items-center gap-1 px-4 py-1.5 rounded text-sm font-bold bg-orange-500 text-black hover:bg-orange-600 transition-all duration-200 hover:scale-105 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className={`inline-flex items-center gap-1 px-4 py-1.5 rounded text-sm font-bold transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:focus-visible:ring-red-500 ${
+                      isActive('/analyzer')
+                        ? 'underline decoration-red-500 underline-offset-4 text-gray-800 dark:text-white'
+                        : 'text-gray-800 dark:text-white hover:text-red-500 dark:hover:text-red-500'
+                    } bg-orange-500 hover:bg-orange-600 dark:bg-transparent dark:hover:bg-red-500/10`}
                   >
                     <span>Analyze</span>
                     <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
@@ -153,7 +161,7 @@ export default function Navbar() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+              className="md:hidden p-2 rounded-md text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 dark:focus-visible:ring-red-500"
               aria-label="Toggle menu"
               aria-expanded={mobileMenuOpen}
             >
@@ -163,113 +171,81 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile slide-in drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
-          {/* Backdrop overlay */}
+      {/* Mobile slide-down menu with max-height transition */}
+      <div className="md:hidden">
+        {/* Overlay */}
+        {mobileMenuOpen && (
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
           />
-          {/* Drawer panel */}
-          <aside
-            className="absolute right-0 top-0 h-full w-64 bg-white dark:bg-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Mobile menu"
-          >
-            <div className="flex justify-end p-4">
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
-                aria-label="Close menu"
-              >
-                <X size={24} />
-              </button>
-            </div>
-            <nav className="px-4 py-2 flex flex-col gap-1">
-              {/* Animated list items */}
-              {[
-                { label: 'Home', href: '/' },
-                { label: 'Analyze', href: '/analyzer', requiresAuth: true },
-              ].map((item, index) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  onClick={(e) => {
-                    if (item.requiresAuth && !session) {
-                      e.preventDefault()
-                      signIn('google')
-                    }
-                    setMobileMenuOpen(false)
-                  }}
-                  className={`${navItemClass} opacity-0 animate-slide-in`}
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                    animationFillMode: 'forwards',
-                  }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {/* Separator */}
-              <hr
-                className="my-2 border-gray-200 dark:border-gray-700 opacity-0 animate-slide-in"
-                style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}
-              />
-              {session ? (
-                <>
-                  <div
-                    className="py-2 px-3 text-sm text-gray-500 dark:text-gray-400 opacity-0 animate-slide-in"
-                    style={{ animationDelay: '300ms', animationFillMode: 'forwards' }}
-                  >
-                    {session.user?.name}
-                  </div>
-                  <button
-                    onClick={() => {
-                      signOut()
-                      setMobileMenuOpen(false)
-                    }}
-                    className={`${navItemClass} opacity-0 animate-slide-in`}
-                    style={{ animationDelay: '400ms', animationFillMode: 'forwards' }}
-                  >
-                    Sign out
-                  </button>
-                </>
-              ) : (
+        )}
+        {/* Collapsible content */}
+        <div
+          className={`relative z-40 bg-black border-b border-red-500/20 overflow-hidden transition-all duration-300 ease-in-out ${
+            mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <nav className="px-4 py-2 flex flex-col gap-1">
+            {/* Home link */}
+            <Link
+              href="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`${mobileLinkBase} text-white hover:bg-gray-800 hover:text-red-500 ${
+                isActive('/') ? 'underline decoration-red-500 underline-offset-4' : ''
+              }`}
+            >
+              Home
+            </Link>
+            {/* Analyze link */}
+            <Link
+              href="/analyzer"
+              onClick={(e) => {
+                if (!session) {
+                  e.preventDefault()
+                  signIn('google')
+                }
+                setMobileMenuOpen(false)
+              }}
+              className={`${mobileLinkBase} text-white hover:bg-gray-800 hover:text-red-500 ${
+                isActive('/analyzer') ? 'underline decoration-red-500 underline-offset-4' : ''
+              }`}
+            >
+              Analyze
+            </Link>
+
+            <hr className="my-2 border-gray-700" />
+
+            {session ? (
+              <>
+                <div className="py-2 px-3 text-sm text-gray-400">
+                  {session.user?.name}
+                </div>
                 <button
                   onClick={() => {
-                    signIn('google')
+                    signOut()
                     setMobileMenuOpen(false)
                   }}
-                  className={`${navItemClass} opacity-0 animate-slide-in`}
-                  style={{ animationDelay: '300ms', animationFillMode: 'forwards' }}
+                  className={`${mobileLinkBase} text-white hover:bg-gray-800 hover:text-red-500`}
                 >
-                  Sign in
+                  Sign out
                 </button>
-              )}
-            </nav>
-          </aside>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  signIn('google')
+                  setMobileMenuOpen(false)
+                }}
+                className={`${mobileLinkBase} text-white hover:bg-gray-800 hover:text-red-500`}
+              >
+                Sign in
+              </button>
+            )}
+          </nav>
         </div>
-      )}
-
-      {/* Custom slide-in animation keyframes */}
-      <style jsx>{`
-        @keyframes slide-in {
-          from {
-            opacity: 0;
-            transform: translateX(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        .animate-slide-in {
-          animation: slide-in 0.3s ease-out forwards;
-        }
-      `}</style>
+      </div>
     </>
   )
 }

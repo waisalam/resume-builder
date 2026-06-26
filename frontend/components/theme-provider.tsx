@@ -28,6 +28,13 @@ function ThemeProviderInner({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     const root = document.documentElement
+    // Set forced dark theme variables
+    root.style.setProperty('--background', '#000000')
+    root.style.setProperty('--foreground', '#ffffff')
+    root.style.setProperty('--primary', '#ef4444')
+    root.style.setProperty('--card', '#1a1a1a')
+    root.style.setProperty('--border', '#2a2a2a')
+
     const originalTransition = root.style.transition
     root.style.transition = 'background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease'
     return () => {
@@ -56,14 +63,11 @@ function ThemeProviderInner({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
+  // Force theme to always stay dark, toggle does nothing but increments counter
   const toggleTheme = React.useCallback(() => {
-    const themes = ['light', 'dark', 'system']
-    const currentTheme = theme || 'system'
-    const currentIndex = themes.indexOf(currentTheme)
-    const nextIndex = (currentIndex + 1) % themes.length
-    setTheme(themes[nextIndex])
+    setTheme('dark')
     setThemeChangeCount(c => c + 1)
-  }, [theme, setTheme])
+  }, [setTheme])
 
   const value = React.useMemo<ThemeContextType>(
     () => ({
@@ -79,9 +83,9 @@ function ThemeProviderInner({ children }: { children: React.ReactNode }) {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
-export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+export function ThemeProvider({ children, forcedTheme, defaultTheme, ...props }: ThemeProviderProps) {
   return (
-    <NextThemesProvider {...props}>
+    <NextThemesProvider forcedTheme="dark" defaultTheme="dark" attribute="class" {...props}>
       <ThemeProviderInner>{children}</ThemeProviderInner>
     </NextThemesProvider>
   )
