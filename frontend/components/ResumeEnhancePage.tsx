@@ -289,21 +289,125 @@ export default function ResumeEnhancePage() {
         @keyframes pulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
         .spin{display:inline-block;animation:spin 1s linear infinite}
         input,textarea{font-family:inherit;transition:border-color .15s}
-        input:focus,textarea:focus{outline:none;border-color:#FF7A00 !important;box-shadow:0 0 0 2px rgba(255,122,0,0.12)}
-        ::-webkit-scrollbar{width:3px}
+        input:focus,textarea:focus{outline:none;border-color:#FF7A00 !important;box-shadow:0 0 0 2px rgba(255,122,0,0.15)}
+        ::-webkit-scrollbar{width:4px}
         ::-webkit-scrollbar-track{background:transparent}
-        ::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
+        ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:3px}
+        ::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.25)}
         .btn-primary:hover{background:#ff8c33 !important;}
-        .btn-ghost:hover{background:rgba(255,255,255,0.04) !important;}
-        .card-hover:hover{border-color:#333 !important;box-shadow:0 4px 12px rgba(0,0,0,0.4) !important;}
-        .input-hover:hover{border-color:#333 !important;}
+        .btn-ghost:hover{background:rgba(255,255,255,0.06) !important;color:#fff !important;}
+        .glass-section {
+          background: rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 12px;
+          box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+          margin-bottom: 12px;
+          overflow: hidden;
+        }
+        .glass-group-card {
+          background: rgba(255,255,255,0.03);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          border: 0.5px solid rgba(255,255,255,0.08);
+          border-radius: 8px;
+          padding: 12px;
+          margin-bottom: 8px;
+          transition: border-color .2s ease;
+        }
+        .glass-group-card:hover{border-color:rgba(255,122,0,0.2);}
+        .glass-resume-card {
+          background: rgba(20,20,20,0.85);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 14px;
+          padding: 24px 28px;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+          transition: border-color .2s, box-shadow .2s;
+        }
+        .glass-resume-card:hover {
+          border-color: rgba(255,255,255,0.12);
+        }
+        .grid-container {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          width: 100%;
+          max-width: 1400px;
+          gap: 16px;
+          height: 100dvh;
+          padding: 16px;
+        }
+        @media (max-width: 768px) {
+          .grid-container {
+            grid-template-columns: 1fr;
+            height: auto;
+            min-height: 100dvh;
+            overflow-y: auto;
+          }
+          .grid-container .left-panel, .grid-container .right-panel {
+            max-height: none;
+            height: auto;
+            overflow: visible;
+          }
+        }
+        .left-panel, .right-panel {
+          display: flex;
+          flex-direction: column;
+          background: rgba(15,15,15,0.7);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 0.5px solid rgba(255,255,255,0.06);
+          border-radius: 14px;
+          overflow: hidden;
+          box-shadow: 0 0 40px rgba(0,0,0,0.4);
+        }
+        .panel-header {
+          padding: 12px 16px;
+          border-bottom: 0.5px solid rgba(255,255,255,0.06);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: rgba(255,255,255,0.02);
+          font-size: 12px;
+          font-weight: 500;
+          color: #e8e8e8;
+        }
+        .scroll-area {
+          flex: 1;
+          overflow-y: auto;
+          min-height: 0;
+          padding: 0 0 10px 0;
+        }
+        .bottom-bar {
+          padding: 12px 14px 14px;
+          border-top: 0.5px solid rgba(255,255,255,0.06);
+          background: rgba(255,255,255,0.02);
+        }
+        input, textarea {
+          background: rgba(10,10,10,0.8);
+          color: #e8e8e8;
+          border: 0.5px solid rgba(255,255,255,0.08);
+          border-radius: 6px;
+          padding: 8px 10px;
+          font-size: 13px;
+          width: 100%;
+          display: block;
+          margin-bottom: 8px;
+          font-family: inherit;
+        }
+        textarea{
+          resize: vertical;
+          line-height: 1.5;
+        }
       `}</style>
 
-      <div style={S.grid}>
+      <div className="grid-container">
 
         {/* ── LEFT ── */}
-        <div style={S.left}>
-          <div style={S.panelHeader}>
+        <div className="left-panel">
+          <div className="panel-header">
             <span style={S.panelTitle}>Resume details</span>
             {status === "streaming" && (
               <span style={S.liveBadgeSmall}>
@@ -315,7 +419,7 @@ export default function ResumeEnhancePage() {
             )}
           </div>
 
-          <div style={S.scrollArea}>
+          <div className="scroll-area">
 
             {/* Basic info */}
             <Section title="Basic info">
@@ -375,7 +479,7 @@ export default function ResumeEnhancePage() {
                 {SECTION_ORDER.map(sKey => (
                   <div key={sKey} style={{
                     ...S.sectionRow,
-                    background: currentSection === sKey ? "#1a1a1a" : "transparent",
+                    background: currentSection === sKey ? "rgba(255,255,255,0.04)" : "transparent",
                     borderLeft: currentSection === sKey ? "2px solid #FF7A00" : "2px solid transparent",
                     transition: "all .2s ease",
                   }}>
@@ -393,43 +497,10 @@ export default function ResumeEnhancePage() {
               </div>
             </Section>
 
-            {/* Edit with AI — shown only after generation */}
-            {status === "done" && (
-              <Section title="Edit with AI">
-                <div style={S.editBox}>
-                  <p style={S.editHint}>
-                    Describe any change — AI will update the resume instantly.
-                  </p>
-                  <Textarea
-                    placeholder={`e.g. "Make the summary shorter and more confident"\n"Add Docker and Kubernetes to skills"\n"Rewrite the Stripe experience to focus on performance"`}
-                    value={editPrompt}
-                    onChange={setEditPrompt}
-                    rows={4}
-                  />
-                  <button
-                    className="btn-primary"
-                    style={{
-                      ...S.primaryBtn,
-                      opacity: editPrompt.trim() && !editLoading ? 1 : 0.4,
-                      cursor: editPrompt.trim() && !editLoading ? "pointer" : "not-allowed",
-                      marginTop: 8,
-                    }}
-                    onClick={handleEditWithAI}
-                  >
-                    {editLoading ? (
-                      <><span className="spin" style={{ display: "inline-block" }} /> Applying changes…</>
-                    ) : (
-                      <>✦ Apply AI edit</>
-                    )}
-                  </button>
-                </div>
-              </Section>
-            )}
-
           </div>
 
           {/* Bottom action */}
-          <div style={S.bottomBar}>
+          <div className="bottom-bar">
             {status === "idle" || status === "error" ? (
               <button className="btn-primary" style={S.primaryBtn} onClick={handleGenerate}>✦ Enhance with AI</button>
             ) : status === "streaming" ? (
@@ -446,17 +517,16 @@ export default function ResumeEnhancePage() {
           </div>
         </div>
 
-        {/* ── RIGHT: live preview ── */}
-        <div style={S.right}>
-          <div style={S.panelHeader}>
+        {/* ── RIGHT: live preview / AI prompt input ── */}
+        <div className="right-panel">
+          <div className="panel-header">
             <span style={S.panelTitle}>Live preview</span>
             {status === "done" && <span style={S.doneBadgeSmall}>✓ AI enhanced</span>}
             {status === "streaming" && <span style={S.liveBadgeSmall}><span style={S.badgeDot} /> generating</span>}
           </div>
 
-          <div style={S.preview}>
-            <div style={S.resumeCard} className="card-hover">
-
+          <div className="scroll-area">
+            <div className="glass-resume-card">
               {/* Header */}
               <div style={S.resumeHeader}>
                 <div style={S.resumeName}>{data.name || "Your Name"}</div>
@@ -484,8 +554,38 @@ export default function ResumeEnhancePage() {
                   </div>
                 ))}
               </ResumeSection>
-
             </div>
+
+            {/* ── AI prompt input (shown after generation) ── */}
+            {status === "done" && (
+              <div className="glass-section" style={{ marginTop: 16, padding: 16 }}>
+                <p style={{ fontSize: 11, color: "#999", marginBottom: 10 }}>
+                  Refine further with AI — describe any change you want
+                </p>
+                <Textarea
+                  placeholder={`e.g. "Make the summary more confident"\n"Add Docker and Kubernetes to skills"\n"Rewrite the Stripe experience to focus on performance"`}
+                  value={editPrompt}
+                  onChange={setEditPrompt}
+                  rows={4}
+                />
+                <button
+                  className="btn-primary"
+                  style={{
+                    ...S.primaryBtn,
+                    opacity: editPrompt.trim() && !editLoading ? 1 : 0.4,
+                    cursor: editPrompt.trim() && !editLoading ? "pointer" : "not-allowed",
+                    marginTop: 10,
+                  }}
+                  onClick={handleEditWithAI}
+                >
+                  {editLoading ? (
+                    <><span className="spin" style={{ display: "inline-block" }} /> Applying…</>
+                  ) : (
+                    <>✦ Apply AI edit</>
+                  )}
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -498,22 +598,24 @@ export default function ResumeEnhancePage() {
 
 function Section({ title, children, onAdd }: { title: string; children: React.ReactNode; onAdd?: () => void }) {
   return (
-    <div style={{ padding: "12px 14px 4px" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+    <div className="glass-section" style={{ padding: "0 0 10px 0" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px 4px", marginBottom: 4 }}>
         <span style={{ fontSize: 10, fontWeight: 600, color: "#FF7A00", textTransform: "uppercase", letterSpacing: "0.08em" }}>{title}</span>
         {onAdd && (
           <button onClick={onAdd} style={{ fontSize: 11, color: "#FF7A00", background: "none", border: "0.5px solid rgba(255,122,0,0.3)", borderRadius: 4, padding: "2px 8px", cursor: "pointer", transition: "background .15s" }}
             className="btn-ghost">+ Add</button>
         )}
       </div>
-      {children}
+      <div style={{ padding: "0 14px" }}>
+        {children}
+      </div>
     </div>
   );
 }
 
 function GroupCard({ children, onRemove }: { children: React.ReactNode; onRemove: () => void }) {
   return (
-    <div style={{ background: "#0f0f0f", border: "0.5px solid #222", borderRadius: 8, padding: "10px 12px", marginBottom: 8, transition: "border-color .2s ease" }} className="card-hover">
+    <div className="glass-group-card">
       {children}
       <button onClick={onRemove} style={{ fontSize: 11, color: "#666", background: "none", border: "none", cursor: "pointer", padding: 0, marginTop: 2, transition: "color .15s" }}
         onMouseEnter={e => e.currentTarget.style.color = "#aaa"}
@@ -525,24 +627,21 @@ function GroupCard({ children, onRemove }: { children: React.ReactNode; onRemove
 function Input({ placeholder, value, onChange }: { placeholder: string; value: string; onChange: (v: string) => void }) {
   return (
     <input placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)}
-      style={{ width: "100%", background: "#0a0a0a", color: "#e8e8e8", border: "0.5px solid #2a2a2a", borderRadius: 6, padding: "8px 10px", fontSize: 13, marginBottom: 8, display: "block", transition: "border-color .15s" }}
-      className="input-hover" />
+      style={{ marginBottom: 8 }} />
   );
 }
 
 function Textarea({ placeholder, value, onChange, rows }: { placeholder: string; value: string; onChange: (v: string) => void; rows?: number }) {
   return (
     <textarea placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)} rows={rows ?? 3}
-      style={{ width: "100%", background: "#0a0a0a", color: "#e8e8e8", border: "0.5px solid #2a2a2a", borderRadius: 6, padding: "8px 10px", fontSize: 13, marginBottom: 8, display: "block", resize: "vertical" as const, lineHeight: 1.5, fontFamily: "inherit", transition: "border-color .15s" }}
-      className="input-hover"
-    />
+      style={{ marginBottom: 8 }} />
   );
 }
 
 function ResumeSection({ title, children, isStreaming }: { title: string; children: React.ReactNode; isStreaming: boolean }) {
   return (
     <div style={{ marginBottom: 18 }}>
-      <div style={{ fontSize: 10, fontWeight: 600, color: isStreaming ? "#FF7A00" : "#444", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8, paddingBottom: 5, borderBottom: "0.5px solid #222", display: "flex", alignItems: "center", gap: 6 }}>
+      <div style={{ fontSize: 10, fontWeight: 600, color: isStreaming ? "#FF7A00" : "#666", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8, paddingBottom: 5, borderBottom: "0.5px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", gap: 6 }}>
         {title}
         {isStreaming && <span style={{ fontSize: 9, color: "#FF7A00", fontWeight: 400, animation: "pulse 1.2s ease-in-out infinite", display: "inline-block" }}>● live</span>}
       </div>
@@ -556,51 +655,11 @@ function ResumeSection({ title, children, isStreaming }: { title: string; childr
 const S: Record<string, React.CSSProperties> = {
   page: {
     fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-    background: "#0a0a0a",
-    height: "100vh",
-    padding: 16,
-    overflow: "hidden",
+    background: "radial-gradient(ellipse at top, #1a1a1a 0%, #0a0a0a 70%)",
+    minHeight: "100dvh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "300px 1fr",
-    maxWidth: 1000,
-    width: "100%",
-    height: "95vh",
-    border: "0.5px solid #1e1e1e",
-    borderRadius: 14,
-    overflow: "hidden",
-    boxShadow: "0 0 40px rgba(0,0,0,0.5)",
-    background: "#0d0d0d",
-  },
-  left: {
-    borderRight: "0.5px solid #1e1e1e",
-    display: "flex",
-    flexDirection: "column",
-    background: "#111",
-    height: "100%",
-    overflow: "hidden",
-  },
-  right: {
-    display: "flex",
-    flexDirection: "column",
-    background: "#0c0c0c",
-    height: "100%",
-    overflow: "hidden",
-  },
-  panelHeader: {
-    padding: "12px 16px",
-    borderBottom: "0.5px solid #1e1e1e",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    background: "#141414",
-    fontSize: 12,
-    fontWeight: 500,
-    color: "#e8e8e8",
   },
   panelTitle: {
     fontSize: 12,
@@ -635,17 +694,6 @@ const S: Record<string, React.CSSProperties> = {
     color: "#FF7A00",
     border: "0.5px solid rgba(255,122,0,0.3)",
   },
-  scrollArea: {
-    flex: 1,
-    overflowY: "auto" as const,
-    minHeight: 0,
-    padding: "0 0 10px 0",
-  },
-  bottomBar: {
-    padding: "12px 14px 14px",
-    borderTop: "0.5px solid #1e1e1e",
-    background: "#111",
-  },
   primaryBtn: {
     width: "100%",
     padding: "9px 0",
@@ -666,7 +714,7 @@ const S: Record<string, React.CSSProperties> = {
     width: "100%",
     padding: "9px 0",
     fontSize: 12,
-    border: "0.5px solid #2a2a2a",
+    border: "0.5px solid rgba(255,255,255,0.1)",
     borderRadius: 8,
     cursor: "pointer",
     background: "none",
@@ -676,8 +724,8 @@ const S: Record<string, React.CSSProperties> = {
   progressPanel: {
     borderRadius: 8,
     overflow: "hidden",
-    border: "0.5px solid #222",
-    background: "#0d0d0d",
+    border: "0.5px solid rgba(255,255,255,0.06)",
+    background: "rgba(255,255,255,0.02)",
   },
   sectionRow: {
     display: "flex",
@@ -685,7 +733,7 @@ const S: Record<string, React.CSSProperties> = {
     gap: 8,
     padding: "7px 12px",
     transition: "background .15s",
-    borderBottom: "0.5px solid #1a1a1a",
+    borderBottom: "0.5px solid rgba(255,255,255,0.04)",
     fontSize: 12,
   },
   sectionLabel: {
@@ -707,7 +755,7 @@ const S: Record<string, React.CSSProperties> = {
     width: 8,
     height: 8,
     borderRadius: "50%",
-    background: "#333",
+    background: "#444",
     display: "inline-block",
   },
   spinner: {
@@ -726,40 +774,12 @@ const S: Record<string, React.CSSProperties> = {
   },
   doneTagSmall: {
     fontSize: 9,
-    color: "#666",
-  },
-  editBox: {
-    background: "#0f0f0f",
-    borderRadius: 8,
-    padding: 12,
-    border: "0.5px solid #2a2a2a",
-  },
-  editHint: {
-    fontSize: 11,
-    color: "#666",
-    marginBottom: 8,
-    lineHeight: 1.5,
-  },
-  preview: {
-    flex: 1,
-    padding: 20,
-    overflowY: "auto" as const,
-    minHeight: 0,
-  },
-  resumeCard: {
-    background: "#161616",
-    borderRadius: 12,
-    border: "0.5px solid #2a2a2a",
-    padding: "24px 28px",
-    maxWidth: 540,
-    margin: "0 auto",
-    boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
-    transition: "border-color .2s, box-shadow .2s",
+    color: "#888",
   },
   resumeHeader: {
     paddingBottom: 16,
     marginBottom: 16,
-    borderBottom: "0.5px solid #242424",
+    borderBottom: "0.5px solid rgba(255,255,255,0.08)",
   },
   resumeName: {
     fontSize: 22,
@@ -789,7 +809,7 @@ const S: Record<string, React.CSSProperties> = {
   },
   placeholder: {
     fontSize: 13,
-    color: "#333",
+    color: "#444",
     fontStyle: "italic",
   },
   chipWrap: {
@@ -842,8 +862,8 @@ const S: Record<string, React.CSSProperties> = {
     whiteSpace: "pre-wrap" as const,
     fontFamily: "monospace",
     lineHeight: 1.6,
-    background: "#0a0a0a",
-    border: "0.5px solid #1e1e1e",
+    background: "rgba(0,0,0,0.5)",
+    border: "0.5px solid rgba(255,255,255,0.06)",
     padding: 10,
     borderRadius: 6,
   },

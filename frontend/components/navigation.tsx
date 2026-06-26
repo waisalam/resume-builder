@@ -92,112 +92,115 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
     <nav
       ref={navRef}
       aria-label="Main navigation"
-      className="bg-black border-b border-zinc-800"
+      className="w-full bg-black border-b border-zinc-800"
     >
-      <div className="w-full px-6 lg:px-12 py-4">
+      <div className="w-full px-4 sm:px-6 lg:px-12 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/">
+          <Link href="/" className="flex-shrink-0">
             <div className="text-2xl font-bold flex items-center gap-2 cursor-pointer hover:opacity-80 transition text-[#ff8c00]" aria-label="ATS Analyzer home">
               <Zap size={28} />
-              ATS Analyzer
+              <span className="hidden sm:inline">ATS Analyzer</span>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center">
-            <LayoutGroup>
-              <ul role="list" className="flex items-center gap-6">
-                {navItems.map((item) => {
-                  const active = isItemActive(item, currentPage)
-                  const hasChildren = !!item.children?.length
-                  const dropdownOpen = openDropdowns.has(item.id)
+          {/* Desktop tab bar - full width scrollable container */}
+          <div className="hidden md:flex flex-1 items-center justify-end ml-8">
+            <div className="flex-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
+              <LayoutGroup>
+                <ul
+                  role="list"
+                  className="flex items-center gap-1 min-w-max px-2"
+                >
+                  {navItems.map((item) => {
+                    const active = isItemActive(item, currentPage)
+                    const hasChildren = !!item.children?.length
+                    const dropdownOpen = openDropdowns.has(item.id)
 
-                  return (
-                    <li key={item.id} className="relative">
-                      {hasChildren ? (
-                        <>
-                          <button
-                            onClick={() => toggleDropdown(item.id)}
-                            aria-expanded={dropdownOpen}
-                            aria-haspopup="true"
-                            className={`group relative flex items-center gap-1 px-2 py-1 rounded-md font-medium transition-all duration-200 hover:bg-white/5 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
-                              active ? 'text-orange-500' : 'text-gray-300'
+                    return (
+                      <li key={item.id} className="relative snap-start">
+                        {hasChildren ? (
+                          <>
+                            <button
+                              onClick={() => toggleDropdown(item.id)}
+                              aria-expanded={dropdownOpen}
+                              aria-haspopup="true"
+                              className={`relative z-10 flex items-center gap-1 px-4 py-2 rounded-full font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
+                                active ? 'text-orange-500' : 'text-gray-300 hover:text-white'
+                              }`}
+                            >
+                              <span>{item.label}</span>
+                              <motion.span
+                                animate={{ rotate: dropdownOpen ? 180 : 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="inline-flex"
+                              >
+                                <ChevronDown size={16} />
+                              </motion.span>
+                              {active && (
+                                <motion.div
+                                  layoutId="active-tab-bg"
+                                  className="absolute inset-0 rounded-full bg-orange-500/20 -z-10"
+                                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                                />
+                              )}
+                            </button>
+
+                            <AnimatePresence>
+                              {dropdownOpen && (
+                                <motion.ul
+                                  initial={{ opacity: 0, y: -8 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -8 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="absolute top-full left-0 mt-2 w-48 rounded-lg bg-[#111111] border border-zinc-800 shadow-xl py-2 z-50"
+                                  role="menu"
+                                >
+                                  {item.children!.map((child) => (
+                                    <li key={child.id} role="menuitem">
+                                      <Link
+                                        href={child.href ?? '#'}
+                                        className={`block px-4 py-2 text-sm font-medium transition-colors hover:bg-white/5 hover:text-orange-400 ${
+                                          currentPage === child.id ? 'text-orange-500' : 'text-gray-300'
+                                        }`}
+                                        onClick={() => setOpenDropdowns(new Set())}
+                                      >
+                                        {child.label}
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </motion.ul>
+                              )}
+                            </AnimatePresence>
+                          </>
+                        ) : (
+                          <Link
+                            href={item.href ?? '#'}
+                            aria-current={active ? 'page' : undefined}
+                            className={`relative z-10 block px-4 py-2 rounded-full font-medium transition-all duration-200 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
+                              active ? 'text-orange-500' : 'text-gray-300 hover:text-white'
                             }`}
                           >
-                            <span>{item.label}</span>
-                            <motion.span
-                              animate={{ rotate: dropdownOpen ? 180 : 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="inline-flex"
-                            >
-                              <ChevronDown size={16} />
-                            </motion.span>
+                            {item.label}
                             {active && (
                               <motion.div
-                                layoutId="active-underline"
-                                className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500 rounded-full"
-                                style={{ bottom: '-2px' }}
+                                layoutId="active-tab-bg"
+                                className="absolute inset-0 rounded-full bg-orange-500/20 -z-10"
                                 transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                               />
                             )}
-                          </button>
-
-                          <AnimatePresence>
-                            {dropdownOpen && (
-                              <motion.ul
-                                initial={{ opacity: 0, y: -8 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -8 }}
-                                transition={{ duration: 0.2 }}
-                                className="absolute top-full left-0 mt-2 w-48 rounded-lg bg-[#111111] border border-zinc-800 shadow-xl py-2 z-50"
-                                role="menu"
-                              >
-                                {item.children!.map((child) => (
-                                  <li key={child.id} role="menuitem">
-                                    <Link
-                                      href={child.href ?? '#'}
-                                      className={`block px-4 py-2 text-sm font-medium transition-colors hover:bg-white/5 hover:text-orange-400 ${
-                                        currentPage === child.id ? 'text-orange-500' : 'text-gray-300'
-                                      }`}
-                                      onClick={() => setOpenDropdowns(new Set())}
-                                    >
-                                      {child.label}
-                                    </Link>
-                                  </li>
-                                ))}
-                              </motion.ul>
-                            )}
-                          </AnimatePresence>
-                        </>
-                      ) : (
-                        <Link
-                          href={item.href ?? '#'}
-                          aria-current={active ? 'page' : undefined}
-                          className={`group relative px-2 py-1 rounded-md font-medium transition-all duration-200 hover:bg-white/5 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
-                            active ? 'text-orange-500' : 'text-gray-300'
-                          }`}
-                        >
-                          {item.label}
-                          {active && (
-                            <motion.div
-                              layoutId="active-underline"
-                              className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500 rounded-full"
-                              style={{ bottom: '-2px' }}
-                              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                            />
-                          )}
-                        </Link>
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
-            </LayoutGroup>
+                          </Link>
+                        )}
+                      </li>
+                    )
+                  })}
+                </ul>
+              </LayoutGroup>
+            </div>
 
             {/* CTA Button (desktop) */}
-            <Link href="/analyzer" className="ml-6">
-              <button className="px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition cursor-pointer bg-[#ff8c00] text-black">
+            <Link href="/analyzer" className="ml-4 flex-shrink-0">
+              <button className="px-6 py-2 rounded-full font-semibold hover:opacity-90 transition cursor-pointer bg-[#ff8c00] text-black whitespace-nowrap">
                 Get Started
               </button>
             </Link>
