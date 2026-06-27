@@ -1,29 +1,42 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import AtsAnalyzer from '@/components/atsAnalyzer';
+import dynamic from 'next/dynamic';
+
+const AtsAnalyzer = dynamic(() => import('@/components/atsAnalyzer'), {
+  loading: () => <AnalyzerSkeleton />,
+  ssr: false,
+});
+
+function AnalyzerSkeleton() {
+  return (
+    <div className="animate-pulse space-y-4" aria-busy="true" aria-label="Loading analyzer">
+      <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl" />
+      <div className="flex gap-4">
+        <div className="h-10 w-24 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+        <div className="h-10 w-24 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+      </div>
+      <div className="h-8 w-3/4 bg-gray-200 dark:bg-gray-700 rounded" />
+      <div className="h-4 w-1/2 bg-gray-200 dark:bg-gray-700 rounded" />
+    </div>
+  );
+}
 
 export default function AnalyzerPage() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
   return (
     <main className="w-full min-h-screen flex items-center justify-center px-4 py-16 md:px-8 md:py-24">
-      <div
+      <section
+        aria-labelledby="main-heading"
         className={`
           w-full max-w-6xl mx-auto
-          backdrop-blur-xl bg-white/10 dark:bg-gray-900/40
-          rounded-3xl border border-white/20 dark:border-gray-700/30
-          shadow-2xl p-6 md:p-10
-          transition-all duration-700 ease-out
-          ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+          backdrop-blur-xl bg-white/10 dark:bg-gray-900/60
+          rounded-3xl border border-white/20 dark:border-white/10
+          shadow-2xl dark:shadow-black/20
+          p-6 md:p-10
+          animate-fadeIn
         `}
       >
         <div className="mb-6 flex items-center gap-3">
-          <div className="p-2 bg-blue-500/10 rounded-full">
+          <div className="p-2 bg-blue-500/10 rounded-full" aria-hidden="true">
             <svg
               className="w-6 h-6 text-blue-600"
               fill="none"
@@ -38,7 +51,7 @@ export default function AnalyzerPage() {
               />
             </svg>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 id="main-heading" className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             ATS Resume Analyzer
           </h1>
           <span className="ml-auto text-xs font-medium px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 rounded-full shadow-sm">
@@ -48,7 +61,7 @@ export default function AnalyzerPage() {
         <div className="w-full">
           <AtsAnalyzer />
         </div>
-      </div>
+      </section>
     </main>
   );
 }
