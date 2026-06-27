@@ -19,8 +19,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${poppins.variable} antialiased`}>
-      <body className="min-h-screen bg-black text-white antialiased">
+    <html lang="en" className={`${poppins.variable} antialiased`} suppressHydrationWarning>
+      <body className={`${poppins.className} min-h-screen bg-black text-white antialiased`}>
         <Providers>
           <div className="relative z-10 flex flex-col min-h-screen w-full">
             {children}

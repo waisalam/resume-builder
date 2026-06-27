@@ -9,7 +9,7 @@ export function generateMetadata() {
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-background w-full">
+    <main className="min-h-screen bg-background w-full px-4 py-8 sm:px-6 lg:px-8">
       <HomePage />
     </main>
   )
