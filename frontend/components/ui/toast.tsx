@@ -72,6 +72,9 @@ const Toast = React.forwardRef<
   return (
     <ToastPrimitives.Root
       ref={ref}
+      role="alert"
+      aria-live="polite"
+      aria-atomic={true}
       className={cn(toastVariants({ variant }), 'p-4', className)}
       {...props}
     />
@@ -100,6 +103,8 @@ const ToastClose = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Close
     ref={ref}
+    aria-label="Close notification"
+    autoFocus
     className={cn(
       'absolute right-2 top-2 rounded-md p-1 text-foreground/50 backdrop-blur-sm transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 opacity-0',
       className,
