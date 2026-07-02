@@ -102,6 +102,9 @@ export default function Navbar() {
               <Link href="#" className={navItemClass}>
                 Pricing
               </Link>
+              <Link href="/testimonials" className={navItemClass}>
+                Testimonials
+              </Link>
             </div>
           </div>
 
@@ -219,6 +222,7 @@ export default function Navbar() {
               { label: 'Analyze', href: '/analyzer', requiresAuth: true },
               { label: 'Features', href: '#', requiresAuth: false },
               { label: 'Pricing', href: '#', requiresAuth: false },
+              { label: 'Testimonials', href: '/testimonials', requiresAuth: false },
             ].map((item, index) => (
               <Link
                 key={item.label}
