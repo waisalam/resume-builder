@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   body {
@@ -10,7 +12,6 @@
     line-height: 1.5;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
   }
   @media (prefers-color-scheme: dark) {
     body {
@@ -27,14 +28,6 @@
   --bg: var(--black);
   --text: var(--white);
   --accent: var(--red);
-}
-
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
 
 a {
